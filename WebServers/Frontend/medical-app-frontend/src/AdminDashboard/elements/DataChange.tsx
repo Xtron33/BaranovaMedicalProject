@@ -6,7 +6,7 @@ import {CirclePlus} from "@gravity-ui/icons";
 import {DataSlice} from "../store/slice/DataSlice.ts";
 import {useEffect, useState} from "react";
 import {ITable} from "../store/models/ITable.ts";
-import {applyData, fetchDataById, updateDataById} from "../api/api.ts";
+import {applyData, fetchDataById, updateDataById} from "../api/Data.api.ts";
 
 
 function DataChange(){
@@ -128,7 +128,7 @@ function DataChange(){
     }
 
     return(
-        <div className="admin">
+        <>
             <div className="admin-container">
 
                 <div className="admin-container__col">
@@ -294,7 +294,7 @@ function DataChange(){
                 </div>
 
             </div>
-        </div>
+        </>
     )
 }
 

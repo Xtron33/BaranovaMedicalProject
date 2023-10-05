@@ -1,14 +1,25 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IUser} from "../models/IUser.ts";
+import {
+    getThemeFromLocalStorage,
+    removeTokenFromLocalStorage,
+    setTokenToLocalStorage
+} from "../../helpers/localstorage.helper.ts";
 
 interface UserState{
-    user: IUser | null
+    user: IUser
     isAuth: boolean
+    theme: string
 }
 
 const initialState: UserState = {
-    user: null,
-    isAuth: false
+    user: {
+        email: " ",
+        token: " ",
+        role: " "
+    },
+    isAuth: false,
+    theme: getThemeFromLocalStorage()
 }
 
 export const UserSlice = createSlice({
@@ -21,7 +32,16 @@ export const UserSlice = createSlice({
         },
         logout: (state) => {
             state.isAuth = false
-            state.user = null
+            state.user = {
+                email: " ",
+                token: " ",
+                role: " "
+            }
+            removeTokenFromLocalStorage("token")
+        },
+        changeTheme: (state, action: PayloadAction<string>) =>{
+            state.theme = action.payload
+            setTokenToLocalStorage("theme", state.theme)
         }
     }
 })

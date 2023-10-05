@@ -1,5 +1,9 @@
 import {createBrowserRouter} from "react-router-dom";
 import {lazy, Suspense} from "react";
+
+import ProtecedRoutesAdmin from "../component/ProtecedRoutesAdmin.tsx";
+import AdminLayout from "../AdminDashboard/pages/AdminLayout.tsx";
+
 import loadingPage from "../elements/loadingPage.tsx";
 
 const AdminMain = lazy(() => import("../AdminDashboard/elements/AdminMain.tsx"))
@@ -13,20 +17,31 @@ const router = createBrowserRouter([
     },
     {
         path:"/admin",
-        element: <Suspense fallback={loadingPage}><AdminMain/></Suspense>
+        element: <Suspense fallback={loadingPage}><AdminLayout/></Suspense>,
+        errorElement: <div>404</div>,
+        children: [
+                {
+                    index: true,
+                    element: <LoginPage/>,
+                },
+                {
+                    path:"/admin/cluster",
+                    element: <ProtecedRoutesAdmin><AdminMain/></ProtecedRoutesAdmin>
+                },
+                {
+                    path:"/admin/new",
+                    element: <ProtecedRoutesAdmin><DataChange/></ProtecedRoutesAdmin>
+                },
+                {
+                    path: "/admin/change/:dataId",
+                    element:  <ProtecedRoutesAdmin><DataChange/></ProtecedRoutesAdmin>
+                }
+            ]
+
+
+
     },
-    {
-        path:"/admin/login",
-        element: <Suspense fallback={loadingPage}><LoginPage/></Suspense>
-    },
-    {
-        path:"/admin/new",
-        element: <Suspense fallback={loadingPage}><DataChange/></Suspense>
-    },
-    {
-        path: "/admin/change/:dataId",
-        element: <Suspense fallback={loadingPage}><DataChange/></Suspense>
-    }
+
 ])
 
 export default router

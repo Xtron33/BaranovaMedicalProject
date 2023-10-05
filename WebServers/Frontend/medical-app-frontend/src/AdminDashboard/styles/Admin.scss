@@ -3,6 +3,23 @@
 body{
     margin: 0;
 }
+.dark{
+    input:-webkit-autofill{
+        -webkit-box-shadow: 0 0 0px 1000px $table-color-dark inset;
+        -webkit-text-fill-color: $table-color-ligth;
+        border: 1px solid $yellow;
+        border-radius: 10px ;
+    }
+}
+.light{
+    input:-webkit-autofill{
+        -webkit-box-shadow: 0 0 0px 1000px $table-color-ligth inset;
+        -webkit-text-fill-color: $table-color-dark;
+        border: 1px solid $yellow;
+        border-radius: 10px ;
+    }
+}
+
 
 .loader{
     height: 100vh;
@@ -19,7 +36,7 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 50px;
+    padding: 100px;
 
     .flex-col{
         display: flex;
@@ -31,7 +48,7 @@ body{
 
 
         margin: auto;
-        width: 75%;
+        width: 65%;
 
         &-first-line{
             margin-bottom: 20px;
@@ -40,29 +57,55 @@ body{
             }
         }
 
+        &-table.light{
+            background: $table-color-ligth;
+
+            .yc-table{
+
+                &__cell_sticky_right{
+                    background: $table-color-ligth!important;
+                }
+
+                &::-webkit-scrollbar-track{
+                    background: $table-color-dark-scrollbar-ligth!important;
+                }
+            }
+        }
+        &-table.dark{
+            background: $table-color-dark;
+
+            .yc-table{
+
+                &__cell_sticky_right{
+                    background: $table-color-dark!important;
+                }
+
+                &::-webkit-scrollbar-track{
+                    background: $table-color-dark-scrollbar-dark!important;
+                }
+            }
+        }
+
         &-table{
             border-radius: 20px;
-            background: $table-color-ligth;
+
             overflow: hidden;
+
+            .yc-table{
+                &::-webkit-scrollbar{
+                    height: 7px!important;
+                }
+                &::-webkit-scrollbar-thumb {
+                    border-radius: 3.5px;
+                    background: $yellow!important;
+                }
+            }
+
+
+
+
         }
-    }
 }
 
-.yc-table{
 
-
-    &__cell_sticky_right{
-        background: $table-color-ligth!important;
-    }
-
-    &::-webkit-scrollbar{
-        height: 7px!important;
-    }
-    &::-webkit-scrollbar-thumb {
-        border-radius: 3.5px;
-        background: $yellow!important;
-    }
-    &::-webkit-scrollbar-track{
-        background: $table-color-dark-scrollbar-ligth!important;
-    }
 }

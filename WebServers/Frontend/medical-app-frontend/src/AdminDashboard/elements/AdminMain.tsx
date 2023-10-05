@@ -2,16 +2,19 @@
 
 import {Button, Icon, Table, withTableActions, withTableSelection} from "@gravity-ui/uikit";
 import {useEffect, useState} from "react";
-import {DeleteDateById, fetchData} from "../api/api.ts";
+import {DeleteDateById, fetchData} from "../api/Data.api.ts";
 import {CirclePlus, TrashBin} from "@gravity-ui/icons";
 import { useNavigate } from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../store/hooks.ts";
+import {useTheme} from "../../hooks/getTheme.ts";
 
 
 
 function AdminMain(){
     const [update, setUpdate] = useState<boolean>(false)
     const dispatch = useAppDispatch()
+
+    const theme = useTheme()
 
     const navigate = useNavigate();
 
@@ -56,7 +59,7 @@ function AdminMain(){
     }
 
     return(
-        <div className="admin">
+        <>
 
             <div className="admin-container flex-col">
                 <div className="admin-container-first-line">
@@ -68,7 +71,7 @@ function AdminMain(){
                     </Button>
                 </div>
 
-                <div className="admin-container-table">
+                <div className={"admin-container-table" + " " + theme}>
                     <DashboardTable
                         data={Tables}
                         columns={ColumnsName}
@@ -81,7 +84,7 @@ function AdminMain(){
                 </div>
 
             </div>
-        </div>
+        </>
     )
 
 }

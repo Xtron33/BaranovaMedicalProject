@@ -1,8 +1,9 @@
 export interface IUserData {
     email: string
     password: string
-    role: string
+    role?: string
 }
+
 
 export interface IResponceUserData{
     email: string | undefined

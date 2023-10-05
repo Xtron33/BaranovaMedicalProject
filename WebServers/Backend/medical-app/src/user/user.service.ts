@@ -31,7 +31,10 @@ export class UserService {
       role: await createUserDto.role,
     });
 
-    const token = this.jwtService.sign({ email: createUserDto.email });
+    const token = this.jwtService.sign({
+      email: createUserDto.email,
+      role: createUserDto.role,
+    });
     return { user, token };
   }
 

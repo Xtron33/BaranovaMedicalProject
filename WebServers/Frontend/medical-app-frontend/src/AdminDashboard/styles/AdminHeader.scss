@@ -1,0 +1,45 @@
+
+@import "const";
+
+
+.admin{
+
+  &-header.light{
+    background: white;
+  }
+  &-header.dark{
+    background: $table-color-dark;
+  }
+
+  &-header{
+    position: fixed;
+    width: 100vw;
+    top: 0;
+    background: white;
+    z-index: 1;
+    -webkit-box-shadow:0 0 15px rgba(63, 55, 63, 0.10);
+    &-container{
+
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 350px;
+      height: 75px;
+      float: right;
+      margin-right: 15%;
+      &__theme-switch{
+        display: flex;
+        justify-content: space-between;
+        width: 150px;
+
+        &-icon{
+          cursor: pointer;
+        }
+      }
+    }
+
+
+  }
+
+}

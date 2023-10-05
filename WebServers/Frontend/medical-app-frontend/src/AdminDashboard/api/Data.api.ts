@@ -1,16 +1,16 @@
-import axios from 'axios'
 import {ITable} from "../store/models/ITable.ts";
 import {TableSlice} from "../store/slice/TableSlice.ts";
 import {AppDispatch} from "../../store/store.ts";
 import {TableColumnConfig, TableDataItem} from "@gravity-ui/uikit";
 import {DataSlice} from "../store/slice/DataSlice.ts";
+import {instance} from "../../api/api.ts";
 
 export const fetchData = async (dispatch: AppDispatch) => {
     try{
         dispatch(TableSlice.actions.setIsLoading(true));
-        const colums = await axios.get<TableColumnConfig<TableDataItem>[]>('http://localhost:5000/api/data/columns')
+        const colums = await instance.get<TableColumnConfig<TableDataItem>[]>('http://localhost:5000/api/data/columns')
         dispatch(TableSlice.actions.setColums(colums.data));
-        const data = await axios.get<ITable[]>("http://localhost:5000/api/data")
+        const data = await instance.get<ITable[]>("http://localhost:5000/api/data")
         dispatch(TableSlice.actions.setTable(data.data))
         dispatch(TableSlice.actions.setIsLoading(false))
 
@@ -28,7 +28,7 @@ export const fetchData = async (dispatch: AppDispatch) => {
 
 export const applyData = async (data: ITable) => {
     try {
-        return await axios.post("http://localhost:5000/api/data", data)
+        return await instance.post("http://localhost:5000/api/data", data)
     }
     catch (e){
 
@@ -38,7 +38,7 @@ export const applyData = async (data: ITable) => {
 export const fetchDataById = async (dispatch: AppDispatch, id:string | undefined) => {
     try{
         dispatch(DataSlice.actions.setIsLoading(true));
-        const data = await axios.get<ITable>('http://localhost:5000/api/data/'+id)
+        const data = await instance.get<ITable>('http://localhost:5000/api/data/'+id)
         dispatch(DataSlice.actions.setData(data.data));
         dispatch(DataSlice.actions.setIsLoading(false))
 
@@ -56,7 +56,7 @@ export const fetchDataById = async (dispatch: AppDispatch, id:string | undefined
 
 export const updateDataById = async (data: ITable, id:string | undefined) => {
     try {
-        return await axios.patch('http://localhost:5000/api/data/'+id,data)
+        return await instance.patch('http://localhost:5000/api/data/'+id,data)
     }
     catch (e){
 
@@ -65,7 +65,7 @@ export const updateDataById = async (data: ITable, id:string | undefined) => {
 
 export const DeleteDateById = async (id:string | undefined) => {
     try {
-        return await axios.delete('http://localhost:5000/api/data/' + id)
+        return await instance.delete('http://localhost:5000/api/data/' + id)
     }
     catch (e){
 
