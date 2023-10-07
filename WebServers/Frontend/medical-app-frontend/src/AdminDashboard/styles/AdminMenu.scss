@@ -1,0 +1,78 @@
+@import "const";
+
+.admin{
+
+  &-menu{
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    width: 75%;
+    margin-top: -100px;
+    &-container{
+      align-items: center;
+      justify-content: center;
+      padding: 50px;
+      width: max-content;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      grid-column-gap: 50px;
+      grid-row-gap: 40px;
+
+      &__elem.dark{
+        background-color: $table-color-dark!important;
+
+        &:hover{
+          background-color: $yellow-hover-dark!important;
+        }
+      }
+      &__elem.light{
+        background-color: $table-color-ligth!important;
+
+        &:hover{
+          background-color: $yellow-hover-light!important;
+        }
+
+      }
+      &__elem{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        //width: 400px;
+        height: 200px;
+
+        transition: all .5s cubic-bezier(1,-0.01,.32,.81);
+
+        &:hover{
+          scale: 1.1;
+        }
+        div{
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-bottom: -5px;
+          margin-top: 20px;
+
+
+          span{
+            margin-left: 15px;
+            font-family: "Inter", serif;
+            font-size: 20px;
+            font-weight: 600;
+          }
+        }
+
+        p{
+          margin-right: 50px;
+          float: right;
+          text-align: right;
+          font-family: "Inter", serif;
+          font-size: 16px;
+          font-weight: 400;
+        }
+      }
+    }
+  }
+}

@@ -28,14 +28,27 @@ export class UserService {
       email: createUserDto.email,
       login: createUserDto.login,
       password: await hash(createUserDto.password, 13),
-      role: await createUserDto.role,
+      role: 'user',
     });
 
-    const token = this.jwtService.sign({
+    return { user };
+  }
+  async createAdmin(createUserDto: CreateUserDto) {
+    const isExist = await this.userRepository.findOne({
+      where: {
+        email: createUserDto.email,
+      },
+    });
+    if (isExist) throw new BadRequestException('This email already exist!');
+
+    const user = await this.userRepository.save({
       email: createUserDto.email,
+      login: createUserDto.login,
+      password: await hash(createUserDto.password, 13),
       role: createUserDto.role,
     });
-    return { user, token };
+
+    return { user };
   }
 
   async findOne(login: string) {

@@ -9,6 +9,7 @@ import loadingPage from "../elements/loadingPage.tsx";
 const AdminMain = lazy(() => import("../AdminDashboard/elements/AdminMain.tsx"))
 const DataChange = lazy(() => import("../AdminDashboard/elements/DataChange.tsx"))
 const LoginPage = lazy(() => import("../AdminDashboard/elements/LoginPage.tsx"))
+const AdminMenu = lazy(() => import("../AdminDashboard/elements/AdminMenu.tsx"))
 
 const router = createBrowserRouter([
     {
@@ -25,15 +26,19 @@ const router = createBrowserRouter([
                     element: <LoginPage/>,
                 },
                 {
+                    path:"/admin/menu",
+                    element: <ProtecedRoutesAdmin><AdminMenu/></ProtecedRoutesAdmin>
+                },
+                {
                     path:"/admin/cluster",
                     element: <ProtecedRoutesAdmin><AdminMain/></ProtecedRoutesAdmin>
                 },
                 {
-                    path:"/admin/new",
+                    path:"/admin/cluster/new",
                     element: <ProtecedRoutesAdmin><DataChange/></ProtecedRoutesAdmin>
                 },
                 {
-                    path: "/admin/change/:dataId",
+                    path: "/admin/cluster/change/:dataId",
                     element:  <ProtecedRoutesAdmin><DataChange/></ProtecedRoutesAdmin>
                 }
             ]

@@ -31,7 +31,7 @@ function LoginPage(){
             if(data){
                 setTokenToLocalStorage('token', data.token)
                 dispatch(UserSlice.actions.login(data))
-                navigate('./cluster')
+                navigate('./menu')
             }
         }
         catch (err:any){
@@ -43,7 +43,7 @@ function LoginPage(){
 
     return(
         <>
-            {isAuth && role ==="admin" ? <Navigate to={"./cluster"} replace/> :
+            {isAuth && role ==="admin" || role==="super-admin" ? <Navigate to={"./menu"} replace/> :
                 <>
                     <div className={"admin-container__login"  + " " + theme}>
 
