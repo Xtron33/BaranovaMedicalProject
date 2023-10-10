@@ -30,8 +30,14 @@
         font-weight: 400;
       }
 
-      .yc-radio-button__option_checked::before{
-        background: $yellow!important;
+      .yc-radio-button__option_checked{
+
+        &::before{
+          background: $yellow!important;
+        }
+        .yc-radio-button__option-text{
+          color: black!important;
+        }
       }
       .yc-radio-button__plate::before{
         background: $yellow!important;

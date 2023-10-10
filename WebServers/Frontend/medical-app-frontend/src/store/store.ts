@@ -1,12 +1,16 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import TableReducer from "../AdminDashboard/store/slice/TableSlice.ts"
 import DataReducer from "../AdminDashboard/store/slice/DataSlice.ts"
+import UserTabelReducer from "../AdminDashboard/store/slice/UserTableSlice.ts"
 import UserReducer from "../store/slice/UserSlice.ts"
+import UserEditReducer from "../AdminDashboard/store/slice/UserEditSlice.ts"
 
 const rootReducer = combineReducers({
     TableReducer,
     DataReducer,
-    UserReducer
+    UserReducer,
+    UserTabelReducer,
+    UserEditReducer
 
 })
 export const store = () => {return configureStore({

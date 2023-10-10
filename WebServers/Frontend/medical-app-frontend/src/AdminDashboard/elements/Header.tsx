@@ -1,5 +1,5 @@
 import {Button, DropdownMenu, Icon, PopupProps, Switch} from "@gravity-ui/uikit";
-import {ArrowRightFromSquare, Bars, DatabaseMagnifier, Moon, Sun} from "@gravity-ui/icons";
+import {ArrowRightFromSquare, Bars, DatabaseMagnifier, Moon, Persons, Sun} from "@gravity-ui/icons";
 import {useEmail} from "../../hooks/useEmail.ts";
 import {useState} from "react";
 import {useTheme} from "../../hooks/getTheme.ts";
@@ -64,8 +64,13 @@ function Header(){
                             [
                                 {
                                     icon: <Icon size={25} data={DatabaseMagnifier} />,
-                                    action: () => navigate("./"),
+                                    action: () => navigate("./cluster"),
                                     text: 'Данные Кластеризации',
+                                },
+                                {
+                                    icon: <Icon size={25} data={Persons} />,
+                                    action: () => navigate("./users"),
+                                    text: 'Пользователи',
                                 },
                                 {
                                     icon: <Icon size={25} data={ArrowRightFromSquare} />,

@@ -1,12 +1,12 @@
 import {Button, Icon, RadioButton, Switch} from "@gravity-ui/uikit";
-import {analizeOpt, genderOpt, ultrasoundOpt} from "../utils/DataRadioConst.ts";
-import {useAppDispatch, useAppSelector} from "../../store/hooks.ts";
+import {analizeOpt, genderOpt, ultrasoundOpt} from "../../utils/DataRadioConst.ts";
+import {useAppDispatch, useAppSelector} from "../../../store/hooks.ts";
 import {useNavigate, useParams} from "react-router-dom";
 import {CirclePlus} from "@gravity-ui/icons";
-import {DataSlice} from "../store/slice/DataSlice.ts";
+import {DataSlice} from "../../store/slice/DataSlice.ts";
 import {useEffect, useState} from "react";
-import {ITable} from "../store/models/ITable.ts";
-import {applyData, fetchDataById, updateDataById} from "../api/Data.api.ts";
+import {ITable} from "../../store/models/ITable.ts";
+import {applyData, fetchDataById, updateDataById} from "../../api/Data.api.ts";
 
 
 function DataChange(){
@@ -34,7 +34,6 @@ function DataChange(){
     const [tumorsVal, setTumorsVal] = useState<boolean>(false)
 
     if(id.dataId!=null){
-        console.log(id)
         useEffect(()=>{
             fetchDataById(dispatch, id.dataId)
 

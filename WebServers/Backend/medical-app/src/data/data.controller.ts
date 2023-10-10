@@ -40,6 +40,7 @@ export class DataController {
     return this.dataService.getColumnNames();
   }
 
+  @Get(':id')
   @Roles(['admin', 'super-admin'])
   @UseGuards(JwtAuthGuard, RolesGuard)
   findOne(@Param('id') id: string) {

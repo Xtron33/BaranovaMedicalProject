@@ -1,16 +1,12 @@
-
-
-import {Button, Icon, Table, withTableActions, withTableSelection} from "@gravity-ui/uikit";
 import {useEffect, useState} from "react";
-import {DeleteDateById, fetchData} from "../api/Data.api.ts";
+import {useAppDispatch, useAppSelector} from "../../../store/hooks.ts";
+import {useTheme} from "../../../hooks/getTheme.ts";
+import {useNavigate} from "react-router-dom";
+import {Button, Icon, Table, withTableActions, withTableSelection} from "@gravity-ui/uikit";
 import {CirclePlus, TrashBin} from "@gravity-ui/icons";
-import { useNavigate } from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "../../store/hooks.ts";
-import {useTheme} from "../../hooks/getTheme.ts";
+import {DeleteUserById, fetchUsers} from "../../api/Users.api.ts";
 
-
-
-function AdminMain(){
+function UserEdit(){
     const [update, setUpdate] = useState<boolean>(false)
     const dispatch = useAppDispatch()
 
@@ -21,10 +17,10 @@ function AdminMain(){
     const DashboardTable = (withTableSelection(withTableActions(Table)));
 
 
-    const {Tables, ColumnsName} = useAppSelector(state => state.TableReducer)
+    const {Tables, ColumnsName} = useAppSelector(state => state.UserTabelReducer)
 
     useEffect(() => {
-        fetchData(dispatch)
+        fetchUsers(dispatch)
     },[update])
 
 
@@ -41,7 +37,7 @@ function AdminMain(){
             },
             {
                 text: 'Удалить', handler: () => {
-                    DeleteDateById(item.id);
+                    DeleteUserById(item.id);
                     setUpdate(!update)
                 }, theme: 'danger'
             },
@@ -53,7 +49,7 @@ function AdminMain(){
 
     function deleteSelect(){
         for(let elem of selectedIds){
-            DeleteDateById(elem)
+            DeleteUserById(elem)
         }
         setUpdate(!update)
     }
@@ -64,7 +60,7 @@ function AdminMain(){
             <div className="admin-container flex-col">
                 <div className="admin-container-first-line">
                     <Button width="auto" view="action" size="xl" onClick={() => navigate("new")}>
-                        Добавить новые данные<Icon data={CirclePlus}/>
+                        Добавить нового пользователя<Icon data={CirclePlus}/>
                     </Button>
                     <Button className="admin-container-first-line__btn" width="auto" view="flat-danger" size="xl" onClick={() => deleteSelect()}>
                         Удалить<Icon data={TrashBin}/>
@@ -89,4 +85,4 @@ function AdminMain(){
 
 }
 
-export default AdminMain
+export default UserEdit

@@ -16,6 +16,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { RolesGuard } from '../auth/guards/role-auth.guards';
 import { Roles } from '../auth/decorator/roles-auth.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guards';
+import { UpdateDatumDto } from '../data/dto/update-datum.dto';
 
 @Controller('user')
 export class UserController {
@@ -36,8 +37,35 @@ export class UserController {
     return this.userService.createAdmin(createUserDto);
   }
 
+  @Get()
+  @Roles(['admin', 'super-admin'])
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  findAll() {
+    return this.userService.findAll();
+  }
+
+  @Get('columns')
+  @Roles(['admin', 'super-admin'])
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  getColumnsNames() {
+    return this.userService.getColumnNames();
+  }
   @Get(':id')
-  findOne(@Param('email') email: string) {
-    return this.userService.findOne(email);
+  findOne(@Param('id') id: number) {
+    return this.userService.findOneId(id);
+  }
+
+  @Patch(':id')
+  @Roles(['admin', 'super-admin'])
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.userService.update(+id, updateUserDto);
+  }
+
+  @Delete(':id')
+  @Roles(['admin', 'super-admin'])
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  remove(@Param('id') id: string) {
+    return this.userService.remove(+id);
   }
 }

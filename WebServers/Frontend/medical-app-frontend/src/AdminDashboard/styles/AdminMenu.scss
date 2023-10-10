@@ -36,10 +36,10 @@
 
       }
       &__elem{
+        cursor: pointer;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        //width: 400px;
         height: 200px;
 
         transition: all .5s cubic-bezier(1,-0.01,.32,.81);
@@ -47,31 +47,39 @@
         &:hover{
           scale: 1.1;
         }
-        div{
 
+
+        &-container{
           display: flex;
-          justify-content: center;
-          align-items: center;
-          margin-bottom: -5px;
-          margin-top: 20px;
+          flex-direction: column;
+          padding: 45px;
+          div{
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: -5px;
+            margin-top: 20px;
 
 
-          span{
-            margin-left: 15px;
-            font-family: "Inter", serif;
-            font-size: 20px;
-            font-weight: 600;
+            span{
+              margin-left: 15px;
+              font-family: "Inter", serif;
+              font-size: 20px;
+              font-weight: 600;
+            }
           }
+
+          p{
+            float: right;
+            text-align: right;
+            font-family: "Inter", serif;
+            font-size: 16px;
+            font-weight: 400;
+          }
+
         }
 
-        p{
-          margin-right: 50px;
-          float: right;
-          text-align: right;
-          font-family: "Inter", serif;
-          font-size: 16px;
-          font-weight: 400;
-        }
       }
     }
   }
