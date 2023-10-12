@@ -1,4 +1,4 @@
-import {Button, Icon, TextInput} from "@gravity-ui/uikit";
+import {Button, Icon, TextInput, useToaster} from "@gravity-ui/uikit";
 import {ArrowRightToSquare} from "@gravity-ui/icons";
 import {AuthApi} from "../../api/auth.api.ts";
 import {useState} from "react";
@@ -18,6 +18,7 @@ function LoginPage(){
     const isAuth:boolean = useAuth()
     const role:string = useRole()
     const theme = useTheme()
+    const {add} = useToaster()
 
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
@@ -31,10 +32,26 @@ function LoginPage(){
             if(data){
                 setTokenToLocalStorage('token', data.token)
                 dispatch(UserSlice.actions.login(data))
+
+                add({
+                        name: "login",
+                        title: "Успешный вход",
+                        autoHiding: 2000,
+                        type: "success"
+                    });
                 navigate('./menu')
             }
         }
         catch (err:any){
+
+                add({
+                    name: "login",
+                    title: "Не удалось войти в систему",
+                    content: "Проверьте почту и пароль",
+                    autoHiding: 2000,
+                    type: "error"
+                })
+
         }
     }
 

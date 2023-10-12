@@ -8,7 +8,9 @@ interface UserEditState{
 }
 
 const initialState: UserEditState = {
-    Data: {} as IUser,
+    Data: {
+        role: "user"
+    } as IUser,
     isLoading: false,
     error: ''
 }

@@ -1,4 +1,4 @@
-import {Button, Icon, RadioButton, Switch} from "@gravity-ui/uikit";
+import {Button, Icon, RadioButton, Switch, useToaster} from "@gravity-ui/uikit";
 import {analizeOpt, genderOpt, ultrasoundOpt} from "../../utils/DataRadioConst.ts";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks.ts";
 import {useNavigate, useParams} from "react-router-dom";
@@ -19,7 +19,7 @@ function DataChange(){
 
     const dispatch = useAppDispatch()
 
-
+    const {add} = useToaster()
 
     const navigate = useNavigate();
 
@@ -118,9 +118,21 @@ function DataChange(){
     function apply(data: ITable){
         if(id.dataId!=null){
             updateDataById(data,id.dataId)
+            add({
+                name: "cluster-edit",
+                title: "Запись обновленна",
+                autoHiding: 2000,
+                type: "success"
+            });
         }
         else{
             applyData(data);
+            add({
+                name: "cluster-edit",
+                title: "Запись добавлена",
+                autoHiding: 2000,
+                type: "success"
+            });
         }
 
         navigate("/admin");

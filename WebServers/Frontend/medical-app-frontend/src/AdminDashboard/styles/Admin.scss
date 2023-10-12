@@ -20,6 +20,10 @@ body{
     }
 }
 
+.yc-table__table{
+    width: 100%!important;
+}
+
 
 .loader{
     height: 100vh;
@@ -43,12 +47,33 @@ body{
         flex-direction: column;
     }
 
+
+    &-modal{
+
+        &-container{
+            height: 200px;
+            font-family: "Inter", serif;
+            font-size: 18px;
+            display: flex;
+            flex-direction: column;
+            padding: 50px;
+            justify-content: space-between;
+
+            &-accent{
+
+                &__text{
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+
     &-container{
 
 
 
         margin: auto;
-        width: 65%;
+        width: 1200px;
 
         &-first-line{
             margin-bottom: 20px;
