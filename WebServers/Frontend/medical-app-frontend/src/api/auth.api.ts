@@ -8,6 +8,8 @@ export const AuthApi = {
 
     async login(userData: IUserData): Promise<any | undefined>{
             const {data} = await instance.post<IUserData>('auth/login', userData)
+
+
             return data
 
 

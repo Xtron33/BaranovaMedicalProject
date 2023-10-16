@@ -29,6 +29,7 @@ export const UserSlice = createSlice({
         login: (state, action: PayloadAction<IUser>) => {
             state.user = action.payload
             state.isAuth = true
+            setTokenToLocalStorage('token', state.user.token)
         },
         logout: (state) => {
             state.isAuth = false

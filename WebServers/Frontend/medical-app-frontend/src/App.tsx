@@ -20,6 +20,7 @@ function App() {
       if(token){
         const data = await AuthApi.getUser()
         if(data){
+          data.token = token
           dispatch(UserSlice.actions.login(data))
         }
         else {
