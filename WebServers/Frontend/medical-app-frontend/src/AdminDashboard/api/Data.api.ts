@@ -71,3 +71,25 @@ export const DeleteDateById = async (id:string | undefined) => {
 
     }
 }
+
+export const fetchDataPagination = async (dispatch: AppDispatch, page: number, limit: number) => {
+    try{
+        dispatch(TableSlice.actions.setIsLoading(true));
+        const colums = await instance.get<TableColumnConfig<TableDataItem>[]>('http://localhost:5000/api/data/columns')
+        dispatch(TableSlice.actions.setColums(colums.data));
+        const data = await instance.get<[ITable[],number]>(`http://localhost:5000/api/data/pagination?page=${page}&limit=${limit}`)
+        dispatch(TableSlice.actions.setTable(data.data[0]))
+        dispatch(TableSlice.actions.setCount(data.data[1]))
+        dispatch(TableSlice.actions.setIsLoading(false))
+
+    } catch (e) {
+        let error:string = "Something bad gooing"
+
+        if(e instanceof Error){
+            error = e.message
+        }
+
+        dispatch(TableSlice.actions.setError(error))
+        dispatch(TableSlice.actions.setIsLoading(false))
+    }
+}

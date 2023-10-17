@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { DataService } from './data.service';
 import { CreateDatumDto } from './dto/create-datum.dto';
@@ -24,6 +25,16 @@ export class DataController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   create(@Body() createDatumDto: CreateDatumDto) {
     return this.dataService.create(createDatumDto);
+  }
+
+  @Get('pagination')
+  @Roles(['admin', 'super-admin'])
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  findAllWithPagination(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
+    return this.dataService.findAllWithPagination(page, limit);
   }
 
   @Get()

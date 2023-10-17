@@ -6,6 +6,7 @@ interface TableState{
     Tables: ITable[];
     ColumnsName: TableColumnConfig<TableDataItem>[];
     isLoading: boolean;
+    count: number
     error: string;
 }
 
@@ -13,6 +14,7 @@ const initialState: TableState = {
     Tables: [],
     ColumnsName: [],
     isLoading: false,
+    count: 0,
     error: ''
 }
 
@@ -28,6 +30,9 @@ export const TableSlice = createSlice({
         },
         setColums(state, action:PayloadAction<TableColumnConfig<TableDataItem>[]>){
             state.ColumnsName = action.payload
+        },
+        setCount(state, action:PayloadAction<number>){
+            state.count = action.payload
         },
         setError(state,action:PayloadAction<string>){
             state.error = action.payload

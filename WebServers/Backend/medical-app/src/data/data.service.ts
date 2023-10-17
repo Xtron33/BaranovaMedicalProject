@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateDatumDto } from './dto/create-datum.dto';
 import { UpdateDatumDto } from './dto/update-datum.dto';
-import { getConnection, getManager, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Datum } from './entities/datum.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -90,5 +90,15 @@ export class DataService {
     }
 
     return newData;
+  }
+
+  async findAllWithPagination(page: number, limit: number) {
+    return this.dataRepository.findAndCount({
+      order: {
+        createdAt: 'DESC',
+      },
+      take: limit,
+      skip: (page - 1) * limit,
+    });
   }
 }

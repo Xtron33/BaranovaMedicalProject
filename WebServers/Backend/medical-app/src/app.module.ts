@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RecordsModule } from './records/records.module';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { RecordsModule } from './records/records.module';
       inject: [ConfigService],
     }),
     RecordsModule,
+    FileModule,
   ],
   controllers: [AppController],
   providers: [AppService],
