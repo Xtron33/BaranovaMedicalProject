@@ -2,19 +2,19 @@ import {createBrowserRouter} from "react-router-dom";
 import {lazy, Suspense} from "react";
 
 import ProtecedRoutesAdmin from "./ProtecedRoutesAdmin.tsx";
-import AdminLayout from "../AdminDashboard/pages/AdminLayout.tsx";
+import AdminLayout from "../AdminDashboard/elements/AdminLayout.tsx";
 
 import loadingPage from "../elements/loadingPage.tsx";
-import ErrorPageAdmin from "../AdminDashboard/pages/ErrorPageAdmin.tsx";
+import ErrorPageAdmin from "../AdminDashboard/elements/ErrorPageAdmin.tsx";
 import Layout from "../elements/Layout.tsx";
 import ProtecedRoutes from "./ProtecedRoutes.tsx";
 
-const ClusterTable = lazy(() => import("../AdminDashboard/elements/Data/ClusterTable.tsx"))
-const ClusterEdit = lazy(() => import("../AdminDashboard/elements/Data/ClusterEdit.tsx"))
+const ClusterTable = lazy(() => import("../AdminDashboard/pages/Data/ClusterTable.tsx"))
+const ClusterEdit = lazy(() => import("../AdminDashboard/pages/Data/ClusterEdit.tsx"))
 const LoginPage = lazy(() => import("../elements/LoginPage.tsx"))
-const AdminMenu = lazy(() => import("../AdminDashboard/elements/AdminMenu.tsx"))
-const UserTable = lazy(() => import("../AdminDashboard/elements/Users/UserTable.tsx"))
-const UserEdit = lazy(() => import("../AdminDashboard/elements/Users/UserEdit.tsx"))
+const AdminMenu = lazy(() => import("../AdminDashboard/pages/AdminMenu.tsx"))
+const UserTable = lazy(() => import("../AdminDashboard/pages/Users/UserTable.tsx"))
+const UserEdit = lazy(() => import("../AdminDashboard/pages/Users/UserEdit.tsx"))
 const AnalyzTable = lazy(() => import("../pages/AnalyzTable.tsx"))
 
 const router = createBrowserRouter([
