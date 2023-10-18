@@ -1,0 +1,38 @@
+@import "const";
+
+.admin{
+  &-modal{
+
+    &-container{
+      height: 200px;
+      font-family: "Inter", serif;
+      font-size: 18px;
+      display: flex;
+      flex-direction: column;
+      padding: 50px;
+      justify-content: space-between;
+      align-items: center;
+
+      &-progress{
+        width: 500px;
+      }
+
+      &-accent{
+
+        &__text{
+          font-weight: 700;
+        }
+      }
+      &-file{
+
+        input{
+          &::file-selector-button{
+            display: none;
+          }
+          margin-left: 15px;
+        }
+
+      }
+    }
+  }
+}

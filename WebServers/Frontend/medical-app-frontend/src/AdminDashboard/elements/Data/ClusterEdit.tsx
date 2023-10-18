@@ -1,193 +1,312 @@
-
-
-import {
-    Button,
-    Icon,
-    Modal, Pagination, PaginationProps,
-    Progress,
-    Table,
-    TextInput,
-    useToaster,
-    withTableActions,
-    withTableSelection
-} from "@gravity-ui/uikit";
-import {useEffect, useState} from "react";
-import {DeleteDateById, fetchDataPagination} from "../../api/Data.api.ts";
-import {CirclePlus, CloudArrowUpIn, TrashBin} from "@gravity-ui/icons";
-import { useNavigate } from "react-router-dom";
+import {Button, Icon, RadioButton, Switch, useToaster} from "@gravity-ui/uikit";
+import {analizeOpt, genderOpt, ultrasoundOpt} from "../../utils/DataRadioConst.ts";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks.ts";
-import {useTheme} from "../../../hooks/getTheme.ts";
-import {File} from '@gravity-ui/icons';
-import {uploadData} from "../../api/File.api.ts";
-import {UploadProgresSlice} from "../../store/slice/UploadProgresSlice.ts";
-import {RingLoader} from "react-spinners";
+import {useNavigate, useParams} from "react-router-dom";
+import {CirclePlus} from "@gravity-ui/icons";
+import {DataSlice} from "../../store/slice/DataSlice.ts";
+import {useEffect, useState} from "react";
+import {ITable} from "../../store/models/ITable.ts";
+import {applyData, fetchDataById, updateDataById} from "../../api/Data.api.ts";
 
 
 function ClusterEdit(){
-    const [update, setUpdate] = useState<boolean>(false)
+
+    type dataId = {
+        dataId: string;
+    };
+
+    const id = useParams<dataId>()
+
     const dispatch = useAppDispatch()
 
     const {add} = useToaster()
 
-    const theme = useTheme()
-
     const navigate = useNavigate();
 
-    const DashboardTable = (withTableSelection(withTableActions(Table)));
 
-    const [deleteItem, setDeleteItem] = useState<any>({})
-    const [isManyDeleteOpen, setIsManyDeleteOpen] = useState<boolean>(false)
-    const [isDeleteOpen, setIsDeleteOpen] = useState<boolean>(false)
+    const {Data, isLoading} = useAppSelector(state => state.DataReducer)
 
-    const [isImportOpen, setIsImportOpen] = useState<boolean>(false)
 
-    const [file, setFile] = useState<File>()
+    const [cardioVal, setCardioVal] = useState<boolean>(false)
+    const [geniVal, setGeniVal] = useState<boolean>(false)
+    const [gastrVal, setGastrVal] = useState<boolean>(false)
+    const [angiopathyVal, setAngiopathyVal] = useState<boolean>(false)
+    const [tumorsVal, setTumorsVal] = useState<boolean>(false)
 
-    const [pagination, setPagination] = useState({page: 1, pageSize: 50})
+    if(id.dataId!=null){
+        useEffect(()=>{
+            fetchDataById(dispatch, id.dataId)
 
-    function deletElem(item: { id: string | undefined; }):void{
-        DeleteDateById(item.id);
-        setUpdate(!update)
+        },[])
+        useEffect(() => {
+            if(Data.cardivascularSystem===1){
+                setCardioVal(true)
+            }
+            if(Data.genitourinarySystem===1){
+                setGeniVal(true)
+            }
+            if(Data.gastrointestinalTract===1){
+                setGastrVal(true)
+            }
+            if(Data.angiopathy===1){
+                setAngiopathyVal(true)
+            }
+            if(Data.tumorsOtherLocalization===1){
+                setTumorsVal(true)
+        }},[isLoading])}
+    else{
+        useEffect(() => {
+            dispatch(DataSlice.actions.resetState)
+        }, []);
+
     }
 
-    const {Tables, ColumnsName, count} = useAppSelector(state => state.TableReducer)
-    const {progress, isLoading} = useAppSelector(state => state.ProgressReducer)
-
-    useEffect(() => {
-        fetchDataPagination(dispatch, pagination.page, pagination.pageSize)
-    },[update])
 
 
-    const getRowActions:(item: any) => [{ handler: () => void; text: string }, {
-        handler: () => void;
-        theme: "danger" | "normal" | undefined;
-        text: string
-    }] = (item: any) => {
-        return [
-            {
-                text: 'Изменить', handler: () => {
-                    navigate("change/"+item.id)
-                }
-            },
-            {
-                text: 'Удалить', handler: () => {
-                    setDeleteItem(item)
-                    setIsDeleteOpen(true)
-                }, theme: 'danger'
-            },
-        ];
-    }
 
-    const getRowId = 'id';
-    const [selectedIds,setSelectedIds] = useState<Array<string>>([])
 
-    function deleteSelect(){
-        for(let elem of selectedIds){
-            DeleteDateById(elem)
+    function changeCardio(value: boolean){
+        setCardioVal(value);
+        if(value){
+            dispatch(DataSlice.actions.setCardio(1))
         }
-        setUpdate(!update)
-        setIsManyDeleteOpen(false)
+        else{
+            dispatch(DataSlice.actions.setCardio(0))
+        }
     }
 
-    function hanndlerUpload(file:File | undefined){
-        if(file){
-            dispatch(UploadProgresSlice.actions.setIsLoading(true))
-            let formData: FormData = new FormData()
-            formData.append('file', file)
-            uploadData(formData, dispatch).then().finally(() => {
-                setUpdate(!update)
-                dispatch(UploadProgresSlice.actions.setIsLoading(false))
-                setIsImportOpen(false)
-                add({
-                    name: "import-file",
-                    title: "Данные из файла были успешно импортированы",
-                    autoHiding: 2000,
-                    type: "success"
-                });
-            })
+    function changeGeni(value: boolean){
+        setGeniVal(value)
+        if(value){
+            dispatch(DataSlice.actions.setGeni(1))
+        }
+        else{
+            dispatch(DataSlice.actions.setGeni(0))
+        }
+    }
 
+    function changeGastr(value: boolean){
+        setGastrVal(value)
+        if(value){
+            dispatch(DataSlice.actions.setGastr(1))
+        }
+        else{
+            dispatch(DataSlice.actions.setGastr(0))
+        }
+    }
+
+    function changeAngiopathy(value: boolean){
+        setAngiopathyVal(value)
+        if(value){
+            dispatch(DataSlice.actions.setAnigopathy(1))
+        }
+        else{
+            dispatch(DataSlice.actions.setAnigopathy(0))
+        }
+    }
+
+    function changeTumors(value: boolean){
+        setTumorsVal(value)
+        if(value){
+            dispatch(DataSlice.actions.setTumors(1))
+        }
+        else{
+            dispatch(DataSlice.actions.setTumors(0))
+        }
+    }
+
+    function apply(data: ITable){
+        if(id.dataId!=null){
+            updateDataById(data,id.dataId)
+            add({
+                name: "cluster-edit",
+                title: "Запись обновленна",
+                autoHiding: 2000,
+                type: "success"
+            });
+        }
+        else{
+            applyData(data);
+            add({
+                name: "cluster-edit",
+                title: "Запись добавлена",
+                autoHiding: 2000,
+                type: "success"
+            });
         }
 
+        navigate("/admin");
     }
-
-
-    const kostily:React.InputHTMLAttributes<HTMLInputElement> = {
-        accept: ".xlsx"
-    }
-
-    const handlePagination: PaginationProps['onUpdate'] = (page,pageSize) => {
-        setPagination((prevState) => ({...prevState, page, pageSize}))
-        setUpdate(!update)
-    }
-
 
     return(
         <>
+            <div className="admin-container">
 
-            <div className="admin-container flex-col">
-                <div className="admin-container-first-line">
-                    <Button width="auto" view="action" size="xl" onClick={() => navigate("new")}>
-                        Добавить новые данные<Icon data={CirclePlus}/>
-                    </Button>
-                    <Button className="admin-container-first-line__btn" width="auto" selected={true} view="outlined-success" size="xl" onClick={() => setIsImportOpen(true)}>
-                        Импорт из Excel файла<Icon data={CloudArrowUpIn}/>
-                    </Button>
-                    <Button className="admin-container-first-line__btn" width="auto" view="flat-danger" size="xl" onClick={() => setIsManyDeleteOpen(true)}>
-                        Удалить<Icon data={TrashBin}/>
-                    </Button>
+                <div className="admin-container__col">
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">Пол</span>
+                        <RadioButton name="gender" onUpdate={(value) => dispatch(DataSlice.actions.setGender(parseInt(value)))} value={Data.gender===null ? "-2" : Data.gender.toString()} options={genderOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">Гормональный фон</span>
+                        <RadioButton name="hormon" onUpdate={(value) => dispatch(DataSlice.actions.setHormonalBackground(parseInt(value)))} value={Data.hormonalBackground===null ? "-2" : Data.hormonalBackground.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__switch">
+                    <span className="admin-container__switch-text">
+                        Сопутсвующие заболевания
+                    </span>
+
+                        <Switch className="admin-container__switch-opt" size="l" checked={cardioVal} onUpdate={(event) => changeCardio(event)}>Сердечно сосудистая система</Switch>
+
+                        <Switch className="admin-container__switch-opt" size="l" checked={geniVal} onUpdate={(event) => changeGeni(event)}>Мочеполовая система</Switch>
+
+                        <Switch className="admin-container__switch-opt" size="l" checked={gastrVal} onUpdate={(event) => changeGastr(event)}>Желудочно кишечный тракт</Switch>
+
+                        <Switch className="admin-container__switch-opt" size="l" checked={angiopathyVal} onUpdate={(event) => changeAngiopathy(event)}>Ангиопатия</Switch>
+
+                        <Switch className="admin-container__switch-opt" size="l" checked={tumorsVal} onUpdate={(event) => changeTumors(event)}>Опухоли другой локализации</Switch>
+                    </div>
+
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">RBC</span>
+                        <RadioButton name="RBC" onUpdate={(value) => dispatch(DataSlice.actions.setRBC(parseInt(value)))} value={Data.RBC===null ? "-2" : Data.RBC.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">MCV</span>
+                        <RadioButton name="MCV" onUpdate={(value) => dispatch(DataSlice.actions.setMCV(parseInt(value)))} value={Data.MCV===null ? "-2" : Data.MCV.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">RDW</span>
+                        <RadioButton name="RDW" onUpdate={(value) => dispatch(DataSlice.actions.setRDW(parseInt(value)))} value={Data.RDW===null ? "-2" : Data.RDW.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">RDWa</span>
+                        <RadioButton name="RDWa" onUpdate={(value) => dispatch(DataSlice.actions.setRDWa(parseInt(value)))} value={Data.RDWa===null ? "-2" : Data.RDWa.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">HCT</span>
+                        <RadioButton name="HCT" onUpdate={(value) => dispatch(DataSlice.actions.setHCT(parseInt(value)))} value={Data.HCT===null ? "-2" : Data.HCT.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">PLT</span>
+                        <RadioButton name="PLT" onUpdate={(value) => dispatch(DataSlice.actions.setPLT(parseInt(value)))} value={Data.PLT===null ? "-2" : Data.PLT.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">MPV</span>
+                        <RadioButton name="MPV" onUpdate={(value) => dispatch(DataSlice.actions.setMPV(parseInt(value)))} value={Data.MPV===null ? "-2" : Data.MPV.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">PDW</span>
+                        <RadioButton name="PDW" onUpdate={(value) => dispatch(DataSlice.actions.setPDW(parseInt(value)))} value={Data.PDW===null ? "-2" : Data.PDW.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">PCT</span>
+                        <RadioButton name="PCT" onUpdate={(value) => dispatch(DataSlice.actions.setPCT(parseInt(value)))} value={Data.PCT===null ? "-2" : Data.PCT.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">LPCR</span>
+                        <RadioButton name="LPCR" onUpdate={(value) => dispatch(DataSlice.actions.setLPCR(parseInt(value)))} value={Data.LPCR===null ? "-2" : Data.LPCR.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">WBC</span>
+                        <RadioButton name="WBC" onUpdate={(value) => dispatch(DataSlice.actions.setWBC(parseInt(value)))} value={Data.WBC===null ? "-2" : Data.WBC.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
                 </div>
 
-                <div className={"admin-container-table" + " " + theme}>
-                    <DashboardTable
-                        data={Tables}
-                        columns={ColumnsName}
-                        getRowId={getRowId}
-                        selectedIds={selectedIds}
-                        onSelectionChange={setSelectedIds}
-                        getRowActions={getRowActions}
-                        rowActionsSize="xl"
-                    />
+                <div className="admin-container__col">
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">HGB</span>
+                        <RadioButton name="HGB" onUpdate={(value) => dispatch(DataSlice.actions.setHGB(parseInt(value)))} value={Data.HGB===null ? "-2" : Data.HGB.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">MCH</span>
+                        <RadioButton name="MCH" onUpdate={(value) => dispatch(DataSlice.actions.setMCH(parseInt(value)))} value={Data.MCH===null ? "-2" : Data.MCH.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">MCHC</span>
+                        <RadioButton name="MCHC" onUpdate={(value) => dispatch(DataSlice.actions.setMCHC(parseInt(value)))} value={Data.MCHC===null ? "-2" : Data.MCHC.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">LYM</span>
+                        <RadioButton name="LYM" onUpdate={(value) => dispatch(DataSlice.actions.setLYM(parseInt(value)))} value={Data.LYM===null ? "-2" : Data.LYM.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">GRAN</span>
+                        <RadioButton name="GRAN" onUpdate={(value) => dispatch(DataSlice.actions.setGRAN(parseInt(value)))} value={Data.GRAN===null ? "-2" : Data.GRAN.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">MID</span>
+                        <RadioButton name="MID" onUpdate={(value) => dispatch(DataSlice.actions.setMID(parseInt(value)))} value={Data.MID===null ? "-2" : Data.MID.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">LIM%</span>
+                        <RadioButton name="LIMP" onUpdate={(value) => dispatch(DataSlice.actions.setLIMProcent(parseInt(value)))} value={Data.LIMProcent===null ? "-2" : Data.LIMProcent.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">GRAN%</span>
+                        <RadioButton name="GRANP" onUpdate={(value) => dispatch(DataSlice.actions.setGRAProcent(parseInt(value)))} value={Data.GRAProcent===null ? "-2" : Data.GRAProcent.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">MID%</span>
+                        <RadioButton name="MIDP" onUpdate={(value) => dispatch(DataSlice.actions.setMIDProcent(parseInt(value)))} value={Data.MIDProcent===null ? "-2" : Data.MIDProcent.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">NEUT</span>
+                        <RadioButton name="NEUT" onUpdate={(value) => dispatch(DataSlice.actions.setNEUT(parseInt(value)))} value={Data.NEUT===null ? "-2" : Data.NEUT.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">BO</span>
+                        <RadioButton name="BO" onUpdate={(value) => dispatch(DataSlice.actions.setBO(parseInt(value)))} value={Data.BO===null ? "-2" : Data.BO.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">BASO</span>
+                        <RadioButton name="BASO" onUpdate={(value) => dispatch(DataSlice.actions.setBASO(parseInt(value)))} value={Data.BASO===null ? "-2" : Data.BASO.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">MON</span>
+                        <RadioButton name="MON" onUpdate={(value) => dispatch(DataSlice.actions.setMON(parseInt(value)))} value={Data.MON===null ? "-2" : Data.MON.toString()} options={analizeOpt} size="xl"/>
+                    </div>
+
+                    <div className="admin-container__opt">
+                        <span className="admin-container__opt-text">УЗИ</span>
+                        <RadioButton name="UltraSound" onUpdate={(value) => dispatch(DataSlice.actions.setUltrasound(parseInt(value)))} value={Data.Ultrasound===null ? "-2" : Data.Ultrasound.toString()} options={ultrasoundOpt} size="xl"/>
+                    </div>
+
+                    <Button onClick={() => apply(Data)} width="auto" view="action" size="xl" className="admin-container__opt admin-container__but">
+                            Сохранить<Icon data={CirclePlus}/>
+                    </Button>
                 </div>
-                <Pagination className="admin-container-pagination" pageSizeOptions={[25,50,100]} compact={true} showInput={true} page={pagination.page} pageSize={pagination.pageSize} total={count} onUpdate={handlePagination}/>
-                <Modal className="admin-modal" open={isDeleteOpen} onClose={() => setIsDeleteOpen(false)}>
-                    <div className="admin-modal-container">
-                        <span>Вы собираетесь удалить пользователя. </span>
-                        <span className="admin-modal-container-accent__text">{deleteItem.email} Вы уверены?</span>
-                        <Button onClick={() => {deletElem(deleteItem); setIsDeleteOpen(false)}} view="flat-danger" size="l">Да, я уверен</Button>
-                        <Button onClick={() => setIsDeleteOpen(false)} view="action" size="xl">Нет, я не уверен</Button>
-                    </div>
-                </Modal>
-                <Modal className="admin-modal" open={isManyDeleteOpen} onClose={() => setIsManyDeleteOpen(false)}>
-                    <div className="admin-modal-container">
-                        <span>Вы собираетесь удалить {selectedIds.length} пользователей. </span>
-                        <span className="admin-modal-container-accent__text">Вы уверены?</span>
-                        <Button onClick={() => {deleteSelect()}} view="flat-danger" size="l">Да, я уверен</Button>
-                        <Button onClick={() => setIsManyDeleteOpen(false)} view="action" size="xl">Нет, я не уверен</Button>
-                    </div>
-                </Modal>
-                <Modal className="admin-modal" open={isImportOpen} onClose={() => setIsImportOpen(false)}>
-                    {
-                        isLoading ?
-                            <div className="admin-modal-container">
-                                <RingLoader size={110} color="#FFBE5C"/>
-                                <Progress className="admin-modal-container-progress" theme="warning" value={progress} size="s" />
-                            </div>
-                            :
-
-                            <div className="admin-modal-container">
-                                <span>Выберите  файл из которого будут загружены данные</span>
-                                <span className="admin-modal-container-accent__text">Файл:</span>
-                                <TextInput onChange={(e) => {if(e.target.files!==null) setFile(e.target.files[0])}} leftContent={<File style={{marginLeft: "15px"}}/>} controlProps={kostily} className="admin-modal-container-file" type="file" size="xl" hasClear={true}/>
-                                <Button disabled={!file} onClick={() => hanndlerUpload(file)} view="action" size="xl">Загузить</Button>
-                            </div>
-                    }
-
-                </Modal>
 
             </div>
         </>
     )
-
 }
 
-export default ClusterEdit
+export default ClusterEdit;

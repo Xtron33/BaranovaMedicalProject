@@ -7,12 +7,12 @@ import AdminLayout from "../AdminDashboard/pages/AdminLayout.tsx";
 import loadingPage from "../elements/loadingPage.tsx";
 import ErrorPageAdmin from "../AdminDashboard/pages/ErrorPageAdmin.tsx";
 
+const ClusterTable = lazy(() => import("../AdminDashboard/elements/Data/ClusterTable.tsx"))
 const ClusterEdit = lazy(() => import("../AdminDashboard/elements/Data/ClusterEdit.tsx"))
-const DataChange = lazy(() => import("../AdminDashboard/elements/Data/DataChange.tsx"))
 const LoginPage = lazy(() => import("../AdminDashboard/elements/LoginPage.tsx"))
 const AdminMenu = lazy(() => import("../AdminDashboard/elements/AdminMenu.tsx"))
+const UserTable = lazy(() => import("../AdminDashboard/elements/Users/UserTable.tsx"))
 const UserEdit = lazy(() => import("../AdminDashboard/elements/Users/UserEdit.tsx"))
-const UserChange = lazy(() => import("../AdminDashboard/elements/Users/ChangeUsers.tsx"))
 
 const router = createBrowserRouter([
     {
@@ -34,27 +34,27 @@ const router = createBrowserRouter([
                 },
                 {
                     path:"/admin/cluster",
-                    element: <ProtecedRoutesAdmin><ClusterEdit/></ProtecedRoutesAdmin>
+                    element: <ProtecedRoutesAdmin><ClusterTable/></ProtecedRoutesAdmin>
                 },
                 {
                     path:"/admin/cluster/new",
-                    element: <ProtecedRoutesAdmin><DataChange/></ProtecedRoutesAdmin>
+                    element: <ProtecedRoutesAdmin><ClusterEdit/></ProtecedRoutesAdmin>
                 },
                 {
                     path: "/admin/cluster/change/:dataId",
-                    element:  <ProtecedRoutesAdmin><DataChange/></ProtecedRoutesAdmin>
+                    element:  <ProtecedRoutesAdmin><ClusterEdit/></ProtecedRoutesAdmin>
                 },
                 {
                     path: "/admin/users",
-                    element:  <ProtecedRoutesAdmin><UserEdit/></ProtecedRoutesAdmin>
+                    element:  <ProtecedRoutesAdmin><UserTable/></ProtecedRoutesAdmin>
                 },
                 {
                     path: "/admin/users/new",
-                    element:  <ProtecedRoutesAdmin><UserChange/></ProtecedRoutesAdmin>
+                    element:  <ProtecedRoutesAdmin><UserEdit/></ProtecedRoutesAdmin>
                 },
                 {
                     path: "/admin/users/change/:id",
-                    element:  <ProtecedRoutesAdmin><UserChange/></ProtecedRoutesAdmin>
+                    element:  <ProtecedRoutesAdmin><UserEdit/></ProtecedRoutesAdmin>
                 },
                 {
                     path: "*",
