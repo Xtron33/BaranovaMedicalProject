@@ -10,7 +10,7 @@ const ProtecedRoutesAdmin: React.FC<Props> = ({children}) => {
     const isAuth = useAuth();
     const role = useRole()
 
-   return isAuth && role==="admin" || role==="super-admin"? children :  <Navigate to={"/admin"} replace/>
+   return isAuth && role==="admin" || role==="super-admin"? children :  <Navigate to={"/"} replace/>
 }
 
 export default ProtecedRoutesAdmin;

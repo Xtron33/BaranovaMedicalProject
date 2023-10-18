@@ -2,9 +2,12 @@
 
 .admin{
 
+  display: flex;
+
+
   &-menu{
+    height: 90vh;
     display: flex;
-    height: 100vh;
     align-items: center;
     justify-content: center;
     width: 75%;

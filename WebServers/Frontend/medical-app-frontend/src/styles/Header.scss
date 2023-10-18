@@ -1,33 +1,40 @@
 
-@import "const";
+@import "../AdminDashboard/styles/const";
+
+body{
+
+}
 
 
-.admin{
-
-  &-header.light{
+  .header.light{
     background: white;
   }
-  &-header.dark{
+  .header.dark{
     background: $table-color-dark;
   }
 
-  &-header{
+  .header{
     position: fixed;
-    width: 100vw;
+    width: 100%;
     top: 0;
     background: white;
     z-index: 1000;
     -webkit-box-shadow:0 0 15px rgba(63, 55, 63, 0.10);
+    display: flex;
+    justify-content: center;
     &-container{
 
 
       display: flex;
       justify-content: space-between;
       align-items: center;
-      width: 350px;
+      width: 1200px;
       height: 75px;
-      float: right;
-      margin-right: 15%;
+
+
+      &-home{
+        margin-right: 700px;
+      }
       &__theme-switch{
         display: flex;
         justify-content: space-between;
@@ -41,5 +48,3 @@
 
 
   }
-
-}

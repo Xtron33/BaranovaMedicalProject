@@ -9,27 +9,23 @@ import ErrorPageAdmin from "../AdminDashboard/pages/ErrorPageAdmin.tsx";
 
 const ClusterTable = lazy(() => import("../AdminDashboard/elements/Data/ClusterTable.tsx"))
 const ClusterEdit = lazy(() => import("../AdminDashboard/elements/Data/ClusterEdit.tsx"))
-const LoginPage = lazy(() => import("../AdminDashboard/elements/LoginPage.tsx"))
+const LoginPage = lazy(() => import("../elements/LoginPage.tsx"))
 const AdminMenu = lazy(() => import("../AdminDashboard/elements/AdminMenu.tsx"))
 const UserTable = lazy(() => import("../AdminDashboard/elements/Users/UserTable.tsx"))
 const UserEdit = lazy(() => import("../AdminDashboard/elements/Users/UserEdit.tsx"))
 
 const router = createBrowserRouter([
     {
-        path:"/",
-        element: <>HelloWorld</>
+        index: true,
+        element: <Suspense fallback={loadingPage}><LoginPage/></Suspense>,
+
     },
     {
         path:"/admin",
         element: <Suspense fallback={loadingPage}><AdminLayout/></Suspense>,
-        errorElement: <ErrorPageAdmin/>,
         children: [
                 {
                     index: true,
-                    element: <LoginPage/>,
-                },
-                {
-                    path:"/admin/menu",
                     element: <ProtecedRoutesAdmin><AdminMenu/></ProtecedRoutesAdmin>
                 },
                 {

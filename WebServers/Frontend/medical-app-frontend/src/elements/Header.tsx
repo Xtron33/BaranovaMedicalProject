@@ -1,12 +1,12 @@
 import {Button, DropdownMenu, Icon, PopupProps, Switch} from "@gravity-ui/uikit";
-import {ArrowRightFromSquare, Bars, DatabaseMagnifier, Moon, Persons, Sun} from "@gravity-ui/icons";
-import {useEmail} from "../../hooks/useEmail.ts";
+import {ArrowRightFromSquare, Bars, DatabaseMagnifier, House, Moon, Persons, Sun} from "@gravity-ui/icons";
+import {useEmail} from "../hooks/useEmail.ts";
 import {useState} from "react";
-import {useTheme} from "../../hooks/getTheme.ts";
-import {useAppDispatch} from "../../store/hooks.ts";
-import {UserSlice} from "../../store/slice/UserSlice.ts";
+import {useTheme} from "../hooks/getTheme.ts";
+import {useAppDispatch} from "../store/hooks.ts";
+import {UserSlice} from "../store/slice/UserSlice.ts";
 import {useNavigate} from "react-router-dom";
-import {useAuth} from "../../hooks/useAuth.ts";
+import {useAuth} from "../hooks/useAuth.ts";
 
 
 function Header(){
@@ -34,13 +34,17 @@ function Header(){
     }
 
     return(
-        <div className={"admin-header " + theme}>
-            <div className="admin-header-container">
-                <div className="admin-header-container__theme-switch">
-                    <div className="admin-header__theme-switch-icon" onClick={() => changeTheme(false)}>
+        <div className={"header " + theme}>
+            <div className="header-container">
+                <Button onClick={() => navigate('./')} className="header-container-home" view={"flat"}>
+                    <Icon size={25} data={House}/>
+                </Button>
+
+                <div className="header-container__theme-switch">
+                    <div className="header__theme-switch-icon" onClick={() => changeTheme(false)}>
                         <Icon size={25} data={Moon}/></div>
                             <Switch size="l"  checked={themeSwitch} onChange={() => changeTheme(!themeSwitch)}></Switch>
-                    <div className="admin-header-container__theme-switch-icon" onClick={() => changeTheme(true)}><Icon size={25} data={Sun}/></div>
+                    <div className="header-container__theme-switch-icon" onClick={() => changeTheme(true)}><Icon size={25} data={Sun}/></div>
                 </div>
 
                 {isAuth?

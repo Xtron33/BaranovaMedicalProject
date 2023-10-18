@@ -1,7 +1,25 @@
 @import "const";
 
+
+
+
 body{
     margin: 0;
+    &::-webkit-scrollbar{
+        width: 5px!important;
+
+    }
+
+    &::-webkit-scrollbar-track{
+        background-color: $scrollbar!important;
+
+    }
+
+    &::-webkit-scrollbar-thumb{
+        border-radius: 10px;
+        background-color: $yellow!important ;
+    }
+
 }
 .dark{
     input:-webkit-autofill{

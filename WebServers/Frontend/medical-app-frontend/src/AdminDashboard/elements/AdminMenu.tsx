@@ -14,7 +14,7 @@ function AdminMenu(){
             <div className={"admin-menu "}>
                 <div className="admin-menu-container">
                     <Card className={"admin-menu-container__elem "  + theme} view="raised" type="container" size="l" >
-                        <div className={"admin-menu-container__elem-container"} onClick={() => navigate("../cluster")}>
+                        <div className={"admin-menu-container__elem-container"} onClick={() => navigate("./cluster")}>
                             <div>
                                 <Icon size={50} data={DatabaseMagnifier}/>
                                 <span>Данные Кластеризации</span>
@@ -24,7 +24,7 @@ function AdminMenu(){
                     </Card>
 
                     <Card className={"admin-menu-container__elem "  + theme} view="raised" type="container" size="l">
-                        <div className={"admin-menu-container__elem-container"} onClick={() => navigate("../users")}>
+                        <div className={"admin-menu-container__elem-container"} onClick={() => navigate("./users")}>
                             <div>
                                 <Icon size={50} data={Persons}/>
                                 <span>Настройка пользователей</span>
@@ -34,7 +34,7 @@ function AdminMenu(){
                     </Card>
 
                     <Card className={"admin-menu-container__elem "  + theme} view="raised" type="container" size="l" >
-                            <div className={"admin-menu-container__elem-container"} onClick={() => navigate("../records")}>
+                            <div className={"admin-menu-container__elem-container"} onClick={() => navigate("./records")}>
                                 <div>
                                     <Icon size={50} data={RectanglePulse}/>
                                     <span>Просмотр анализов</span>

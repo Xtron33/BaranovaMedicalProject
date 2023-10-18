@@ -1,14 +1,14 @@
 import {Button, Icon, TextInput, useToaster} from "@gravity-ui/uikit";
 import {ArrowRightToSquare} from "@gravity-ui/icons";
-import {AuthApi} from "../../api/auth.api.ts";
+import {AuthApi} from "../api/auth.api.ts";
 import {useState} from "react";
-import {setTokenToLocalStorage} from "../../helpers/localstorage.helper.ts";
-import {UserSlice} from "../../store/slice/UserSlice.ts";
+import {setTokenToLocalStorage} from "../helpers/localstorage.helper.ts";
+import {UserSlice} from "../store/slice/UserSlice.ts";
 import {Navigate, useNavigate} from "react-router-dom";
-import {useAppDispatch} from "../../store/hooks.ts";
-import {useAuth} from "../../hooks/useAuth.ts";
-import {useRole} from "../../hooks/useRole.ts";
-import {useTheme} from "../../hooks/getTheme.ts";
+import {useAppDispatch} from "../store/hooks.ts";
+import {useAuth} from "../hooks/useAuth.ts";
+import {useRole} from "../hooks/useRole.ts";
+import {useTheme} from "../hooks/getTheme.ts";
 
 
 function LoginPage(){
@@ -28,7 +28,6 @@ function LoginPage(){
         try{
             e.preventDefault()
             const data = await AuthApi.login({email, password})
-            console.log(data)
             if(data){
                 setTokenToLocalStorage('token', data.token)
                 dispatch(UserSlice.actions.login(data))
@@ -39,7 +38,7 @@ function LoginPage(){
                         autoHiding: 2000,
                         type: "success"
                     });
-                navigate('./menu')
+                navigate('./admin')
             }
         }
         catch (err:any){
@@ -60,7 +59,7 @@ function LoginPage(){
 
     return(
         <>
-            {isAuth && role ==="admin" || role==="super-admin" ? <Navigate to={"./menu"} replace/> :
+            {isAuth && role ==="admin" || role==="super-admin" ? <Navigate to={"./admin"} replace/> :
                 <>
                     <div className={"admin-container__login"  + " " + theme}>
 

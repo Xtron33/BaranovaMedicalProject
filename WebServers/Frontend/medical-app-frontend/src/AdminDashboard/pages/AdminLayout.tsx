@@ -1,12 +1,12 @@
 import {FC} from "react";
 import { Outlet } from "react-router-dom";
-import Header from "../elements/Header.tsx";
+import Header from "../../elements/Header.tsx";
 
 
 import '../styles/AdminCluster.scss'
 import '../styles/AdminEditor.scss'
 import '../styles/Login.scss'
-import "../styles/AdminHeader.scss"
+import "../../styles/Header.scss"
 import "../styles/AdminMenu.scss"
 import "../styles/AdminModal.scss"
 
