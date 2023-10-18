@@ -38,7 +38,7 @@ function LoginPage(){
                         autoHiding: 2000,
                         type: "success"
                     });
-                navigate('./admin')
+                navigate('./analyz')
             }
         }
         catch (err:any){
@@ -59,7 +59,7 @@ function LoginPage(){
 
     return(
         <>
-            {isAuth && role ==="admin" || role==="super-admin" ? <Navigate to={"./admin"} replace/> :
+            {isAuth && role ==="admin" || role==="super-admin" ? <Navigate to={"./analyz"} replace/> :
                 <>
                     <div className={"admin-container__login"  + " " + theme}>
 

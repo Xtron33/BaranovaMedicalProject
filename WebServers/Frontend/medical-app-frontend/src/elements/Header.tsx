@@ -1,5 +1,15 @@
 import {Button, DropdownMenu, Icon, PopupProps, Switch} from "@gravity-ui/uikit";
-import {ArrowRightFromSquare, Bars, DatabaseMagnifier, House, Moon, Persons, Sun} from "@gravity-ui/icons";
+import {
+    ArrowRightFromSquare, ArrowShapeLeftFromLine,
+    Bars,
+    CrownDiamond,
+    DatabaseMagnifier,
+    House,
+    Magnifier,
+    Moon,
+    Persons,
+    Sun
+} from "@gravity-ui/icons";
 import {useEmail} from "../hooks/useEmail.ts";
 import {useState} from "react";
 import {useTheme} from "../hooks/getTheme.ts";
@@ -7,9 +17,12 @@ import {useAppDispatch} from "../store/hooks.ts";
 import {UserSlice} from "../store/slice/UserSlice.ts";
 import {useNavigate} from "react-router-dom";
 import {useAuth} from "../hooks/useAuth.ts";
+import {useRole} from "../hooks/useRole.ts";
 
 
-function Header(){
+function Header(props: { isAdminPage: boolean }){
+
+    const role = useRole()
     const dispatch = useAppDispatch()
 
     const Email = useEmail();
@@ -57,7 +70,9 @@ function Header(){
                                 <Icon size={25} data={Bars} />
                             </Button>
                         }
-                        items={[
+                        items={
+                        props.isAdminPage ?
+                        [
                             [
                                 {
                                     action: () => console.log(''),
@@ -75,14 +90,54 @@ function Header(){
                                     icon: <Icon size={25} data={Persons} />,
                                     action: () => navigate("./users"),
                                     text: 'Пользователи',
+                                }],
+                            [
+                                {
+                                    icon: <Icon size={25} data={ArrowShapeLeftFromLine} />,
+                                    action: () => navigate("/../"),
+                                    text: 'Вернутся в анализатор',
                                 },
                                 {
                                     icon: <Icon size={25} data={ArrowRightFromSquare} />,
                                     action: () => dispatch(UserSlice.actions.logout()),
                                     text: 'Выйти из пользователя',
                                     theme: 'danger',
-                                },]
-                        ]}
+                                },
+                            ]
+
+                        ]
+                        :
+                            [
+                                [
+                                    {
+                                        action: () => console.log(''),
+                                        text: Email,
+                                        disabled: true
+                                    }
+                                ],
+                                {
+                                    icon: <Icon size={25} data={Magnifier} />,
+                                    action: () => navigate("./analyz"),
+                                    text: 'Анализы',
+                                },[
+
+                                {
+                                    hidden: !(role === "admin" || role === "super-admin"),
+                                    icon: <Icon size={25} data={CrownDiamond} />,
+                                    action: () => navigate("../admin"),
+                                    text: 'Перейти в админ панель',
+
+                                },
+                                {
+                                    icon: <Icon size={25} data={ArrowRightFromSquare} />,
+                                    action: () => dispatch(UserSlice.actions.logout()),
+                                    text: 'Выйти из пользователя',
+                                    theme: 'danger',
+                                },
+                            ]
+                                ]
+
+                    }
                     /> :
                     <></>
                 }

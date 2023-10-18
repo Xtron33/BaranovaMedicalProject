@@ -10,6 +10,7 @@ import {ThemeProvider} from "@gravity-ui/uikit";
 
 import "./styles/Loader.scss"
 import "./styles/Toaster.scss"
+import "./styles/const.scss"
 
 
 function App() {

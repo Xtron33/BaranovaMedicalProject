@@ -16,10 +16,11 @@ import '@gravity-ui/uikit/styles/styles.css';
 
 const AdminLayout: FC = () => {
 
-    return(
+    const isAdminPage = true;
+    return (
 
         <div className="admin">
-            <Header/>
+            <Header isAdminPage={isAdminPage}/>
             <Outlet/>
         </div>
     )
