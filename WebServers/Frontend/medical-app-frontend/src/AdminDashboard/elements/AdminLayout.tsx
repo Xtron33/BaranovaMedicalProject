@@ -5,7 +5,7 @@ import Header from "../../elements/Header.tsx";
 
 import '../styles/AdminCluster.scss'
 import '../styles/AdminEditor.scss'
-import '../styles/Login.scss'
+import '../../styles/Page/Login.scss'
 import "../../styles/Header.scss"
 import "../styles/AdminMenu.scss"
 import "../styles/AdminModal.scss"

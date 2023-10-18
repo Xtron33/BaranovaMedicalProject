@@ -11,7 +11,7 @@ import ProtecedRoutes from "./ProtecedRoutes.tsx";
 
 const ClusterTable = lazy(() => import("../AdminDashboard/pages/Data/ClusterTable.tsx"))
 const ClusterEdit = lazy(() => import("../AdminDashboard/pages/Data/ClusterEdit.tsx"))
-const LoginPage = lazy(() => import("../elements/LoginPage.tsx"))
+const LoginPage = lazy(() => import("../pages/LoginPage.tsx"))
 const AdminMenu = lazy(() => import("../AdminDashboard/pages/AdminMenu.tsx"))
 const UserTable = lazy(() => import("../AdminDashboard/pages/Users/UserTable.tsx"))
 const UserEdit = lazy(() => import("../AdminDashboard/pages/Users/UserEdit.tsx"))

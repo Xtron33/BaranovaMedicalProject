@@ -1,25 +1,20 @@
-@import "../../styles/const";
+@import "../const";
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 
 
-.admin{
+.login{
+
+  width: 100vw;
+  height: 100vh;
+  display: flex;
   align-items: center;
-  justify-items: center;
-  .not-right{
-    margin: auto;
-    display: flex;
-    font-family: "Inter", serif;
-    font-size: 40px;
-    width: 70%;
-    font-weight: 700;
-    text-align: center;
-    line-height: 50px;
-  }
+  justify-content: center;
 
 
     &-container{
+
 
       &__login{
         display: flex;

@@ -9,6 +9,7 @@ import {useAppDispatch} from "../store/hooks.ts";
 import {useAuth} from "../hooks/useAuth.ts";
 import {useRole} from "../hooks/useRole.ts";
 import {useTheme} from "../hooks/getTheme.ts";
+import Header from "../elements/Header.tsx";
 
 
 function LoginPage(){
@@ -55,21 +56,18 @@ function LoginPage(){
     }
 
 
-
+    const isAdminPage=false
 
     return(
         <>
             {isAuth && role ==="admin" || role==="super-admin" ? <Navigate to={"./analyz"} replace/> :
                 <>
-                    <div className={"admin-container__login"  + " " + theme}>
-
-                        {                role !== "admin" && role !== " " ?
-
-                            <div className="not-right"> Недостаточно прав для доступа к административной панели</div>
-                            :
+                    <Header isAdminPage={isAdminPage}/>
+                    <div className={"login"}>
+                    <div className={"login-container"  + " " + theme}>
 
                             <form onSubmit={loginHandler}>
-                                <div className={"admin-container__login-cont"}>
+                                <div className={"login-container__login-cont"}>
                                     <TextInput onChange={(e) => setEmail(e.target.value)} value={email} type="email" autoFocus={true} size="xl" placeholder="example@mail.ru" label="Email"/>
                                     <TextInput onChange={(e) => setPassword(e.target.value)} value={password} type="password" size="xl" placeholder="Very secret pass" label="Password"/>
                                     <Button type="submit" width="max" view="action" size="xl">
@@ -77,9 +75,9 @@ function LoginPage(){
                                     </Button>
                                 </div>
                             </form>
-                        }
 
 
+                    </div>
                     </div>
                 </>
             }
