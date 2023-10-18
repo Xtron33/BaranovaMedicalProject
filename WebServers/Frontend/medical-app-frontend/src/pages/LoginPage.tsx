@@ -7,7 +7,6 @@ import {UserSlice} from "../store/slice/UserSlice.ts";
 import {Navigate, useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../store/hooks.ts";
 import {useAuth} from "../hooks/useAuth.ts";
-import {useRole} from "../hooks/useRole.ts";
 import {useTheme} from "../hooks/getTheme.ts";
 import Header from "../elements/Header.tsx";
 
@@ -17,7 +16,6 @@ function LoginPage(){
     const dispatch = useAppDispatch()
 
     const isAuth:boolean = useAuth()
-    const role:string = useRole()
     const theme = useTheme()
     const {add} = useToaster()
 
@@ -60,7 +58,7 @@ function LoginPage(){
 
     return(
         <>
-            {isAuth && role ==="admin" || role==="super-admin" ? <Navigate to={"./analyz"} replace/> :
+            {isAuth ? <Navigate to={"./analyz"} replace/> :
                 <>
                     <Header isAdminPage={isAdminPage}/>
                     <div className={"login"}>
