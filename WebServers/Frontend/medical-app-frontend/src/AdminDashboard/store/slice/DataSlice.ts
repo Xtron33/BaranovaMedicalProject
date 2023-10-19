@@ -40,7 +40,10 @@ const initialState: DataState = {
         BO: 0,
         BASO: 0,
         MON: 0,
-        Ultrasound: 0,},
+        Ultrasound: 0,
+        metastasa: 0,
+        answer: 0,
+    },
     isLoading: false,
     error: ''
 }
@@ -58,101 +61,107 @@ export const DataSlice = createSlice({
         setError(state,action:PayloadAction<string>){
             state.error = action.payload
         },
-        setCardio(state, action: PayloadAction<number>){
+        setCardio(state, action: PayloadAction<number | null>){
             state.Data.cardivascularSystem = action.payload
         },
-        setGeni(state, action: PayloadAction<number>){
+        setGeni(state, action: PayloadAction<number | null>){
             state.Data.genitourinarySystem = action.payload
         },
-        setGastr(state, action: PayloadAction<number>){
+        setGastr(state, action: PayloadAction<number | null>){
             state.Data.gastrointestinalTract = action.payload
         },
-        setAnigopathy(state, action: PayloadAction<number>){
+        setAnigopathy(state, action: PayloadAction<number | null>){
             state.Data.angiopathy = action.payload
         },
-        setTumors(state, action: PayloadAction<number>){
+        setTumors(state, action: PayloadAction<number | null>){
             state.Data.tumorsOtherLocalization = action.payload
         },
-        setGender(state, action: PayloadAction<number>){
+        setGender(state, action: PayloadAction<number | null>){
             state.Data.gender = action.payload
         },
-        setHormonalBackground(state, action: PayloadAction<number>){
+        setHormonalBackground(state, action: PayloadAction<number | null>){
             state.Data.hormonalBackground = action.payload
         },
-        setRBC(state, action: PayloadAction<number>){
+        setRBC(state, action: PayloadAction<number | null>){
             state.Data.RBC = action.payload
         },
-        setMCV(state, action: PayloadAction<number>){
+        setMCV(state, action: PayloadAction<number | null>){
             state.Data.MCV = action.payload
         },
-        setRDW(state, action: PayloadAction<number>){
+        setRDW(state, action: PayloadAction<number | null>){
             state.Data.RDW = action.payload
         },
-        setRDWa(state, action: PayloadAction<number>){
+        setRDWa(state, action: PayloadAction<number | null>){
             state.Data.RDWa = action.payload
         },
-        setHCT(state, action: PayloadAction<number>){
+        setHCT(state, action: PayloadAction<number | null>){
             state.Data.HCT = action.payload
         },
-        setPLT(state, action: PayloadAction<number>){
+        setPLT(state, action: PayloadAction<number | null>){
             state.Data.PLT = action.payload
         },
-        setMPV(state, action: PayloadAction<number>){
+        setMPV(state, action: PayloadAction<number | null>){
             state.Data.MPV = action.payload
         },
-        setPDW(state, action: PayloadAction<number>){
+        setPDW(state, action: PayloadAction<number | null>){
             state.Data.PDW = action.payload
         },
-        setPCT(state, action: PayloadAction<number>){
+        setPCT(state, action: PayloadAction<number | null>){
             state.Data.PCT = action.payload
         },
-        setLPCR(state, action: PayloadAction<number>){
+        setLPCR(state, action: PayloadAction<number | null>){
             state.Data.LPCR = action.payload
         },
-        setWBC(state, action: PayloadAction<number>){
+        setWBC(state, action: PayloadAction<number | null>){
             state.Data.WBC = action.payload
         },
-        setHGB(state, action: PayloadAction<number>){
+        setHGB(state, action: PayloadAction<number | null>){
             state.Data.HGB = action.payload
         },
-        setMCH(state, action: PayloadAction<number>){
+        setMCH(state, action: PayloadAction<number | null>){
             state.Data.MCH = action.payload
         },
-        setMCHC(state, action: PayloadAction<number>){
+        setMCHC(state, action: PayloadAction<number | null>){
             state.Data.MCHC = action.payload
         },
-        setLYM(state, action: PayloadAction<number>){
+        setLYM(state, action: PayloadAction<number | null>){
             state.Data.LYM = action.payload
         },
-        setGRAN(state, action: PayloadAction<number>){
+        setGRAN(state, action: PayloadAction<number | null>){
             state.Data.GRAN = action.payload
         },
-        setMID(state, action: PayloadAction<number>){
+        setMID(state, action: PayloadAction<number | null>){
             state.Data.MID = action.payload
         },
-        setLIMProcent(state, action: PayloadAction<number>){
+        setLIMProcent(state, action: PayloadAction<number | null>){
             state.Data.LIMProcent = action.payload
         },
-        setGRAProcent(state, action: PayloadAction<number>){
+        setGRAProcent(state, action: PayloadAction<number | null>){
             state.Data.GRAProcent = action.payload
         },
-        setMIDProcent(state, action: PayloadAction<number>){
+        setMIDProcent(state, action: PayloadAction<number | null>){
             state.Data.MIDProcent = action.payload
         },
-        setNEUT(state, action: PayloadAction<number>){
+        setNEUT(state, action: PayloadAction<number | null>){
             state.Data.NEUT = action.payload
         },
-        setBO(state, action: PayloadAction<number>){
+        setBO(state, action: PayloadAction<number | null>){
             state.Data.BO = action.payload
         },
-        setBASO(state, action: PayloadAction<number>){
+        setBASO(state, action: PayloadAction<number | null>){
             state.Data.BASO = action.payload
         },
-        setMON(state, action: PayloadAction<number>){
+        setMON(state, action: PayloadAction<number | null>){
             state.Data.MON = action.payload
         },
-        setUltrasound(state, action: PayloadAction<number>){
+        setUltrasound(state, action: PayloadAction<number | null>){
             state.Data.Ultrasound = action.payload
+        },
+        setMetastasa(state, action: PayloadAction<number | null>){
+            state.Data.metastasa = action.payload
+        },
+        setAnswer(state, action: PayloadAction<number | null>){
+            state.Data.answer = action.payload
         },
         resetState(){
             return initialState

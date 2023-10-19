@@ -5,6 +5,7 @@ import numpy as np
 from tensorflow import keras
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Flatten
 import pandas as pd
 
 
@@ -15,8 +16,8 @@ X = dataset.iloc[:len(dataset.index), :33].to_numpy()
 y = dataset.iloc[:len(dataset.index), 33].to_numpy()
 
 model = Sequential()
-model.add(Dense(37, input_shape=(33,), activation='relu'))
-model.add(Dense(33, activation='relu'))
+model.add(Flatten(input_shape=(33,)))
+model.add(Dense(34, activation='relu'))
 model.add(Dense(4, activation='softmax'))
 
 model.compile(loss='sparse_categorical_crossentropy',

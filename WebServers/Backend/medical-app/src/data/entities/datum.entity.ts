@@ -107,6 +107,12 @@ export class Datum {
   @Column({ nullable: true })
   Ultrasound: number;
 
+  @Column({ nullable: true })
+  metastasa: number;
+
+  @Column({ nullable: true })
+  answer: number;
+
   @CreateDateColumn({ nullable: true })
   createdAt: Date;
 

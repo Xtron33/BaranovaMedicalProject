@@ -151,7 +151,7 @@ function ClusterTable(){
                 <Pagination className="admin-container-pagination" pageSizeOptions={[25,50,100]} compact={true} showInput={true} page={pagination.page} pageSize={pagination.pageSize} total={count} onUpdate={handlePagination}/>
                 <Modal className="admin-modal" open={isDeleteOpen} onClose={() => setIsDeleteOpen(false)}>
                     <div className="admin-modal-container">
-                        <span>Вы собираетесь удалить пользователя. </span>
+                        <span>Вы собираетесь удалить запись. </span>
                         <span className="admin-modal-container-accent__text">{deleteItem.email} Вы уверены?</span>
                         <Button onClick={() => {deletElem(deleteItem); setIsDeleteOpen(false)}} view="flat-danger" size="l">Да, я уверен</Button>
                         <Button onClick={() => setIsDeleteOpen(false)} view="action" size="xl">Нет, я не уверен</Button>
@@ -159,7 +159,7 @@ function ClusterTable(){
                 </Modal>
                 <Modal className="admin-modal" open={isManyDeleteOpen} onClose={() => setIsManyDeleteOpen(false)}>
                     <div className="admin-modal-container">
-                        <span>Вы собираетесь удалить {selectedIds.length} пользователей. </span>
+                        <span>Вы собираетесь удалить {selectedIds.length} записей. </span>
                         <span className="admin-modal-container-accent__text">Вы уверены?</span>
                         <Button onClick={() => {deleteSelect()}} view="flat-danger" size="l">Да, я уверен</Button>
                         <Button onClick={() => setIsManyDeleteOpen(false)} view="action" size="xl">Нет, я не уверен</Button>

@@ -65,4 +65,8 @@ export class CreateDatumDto {
   MON: number;
   @IsOptional()
   Ultrasound: number;
+  @IsOptional()
+  metastasa: number;
+  @IsOptional()
+  answer: number;
 }

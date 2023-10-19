@@ -46,6 +46,8 @@ export class DataService {
       BASO: createDatumDto.BASO,
       MON: createDatumDto.MON,
       Ultrasound: createDatumDto.Ultrasound,
+      metastasa: createDatumDto.metastasa,
+      answer: createDatumDto.answer,
     };
 
     return await this.dataRepository.save(newDatum);

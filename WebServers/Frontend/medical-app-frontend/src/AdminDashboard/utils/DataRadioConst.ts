@@ -18,3 +18,16 @@ export const ultrasoundOpt: RadioButtonOption[] = [
     {value: '0', content: 'Н'},
     {value: '1', content: 'НР'},
 ]
+
+export const metastasaOpt: RadioButtonOption[] = [
+    {value: '-2', content: 'НЕИЗВЕСТНО'},
+    {value: '0', content: 'НЕТ'},
+    {value: '1', content: 'ЕСТЬ'},
+]
+
+export const answerOpt: RadioButtonOption[] = [
+    {value: '0', content: '1'},
+    {value: '1', content: '2'},
+    {value: '2', content: '3'},
+    {value: '3', content: '4'},
+]

@@ -8,6 +8,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RecordsModule } from './records/records.module';
 import { FileModule } from './file/file.module';
+import { AnalyzModule } from './analyz/analyz.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { FileModule } from './file/file.module';
     }),
     RecordsModule,
     FileModule,
+    AnalyzModule,
   ],
   controllers: [AppController],
   providers: [AppService],
