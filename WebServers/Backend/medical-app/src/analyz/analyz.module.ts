@@ -14,7 +14,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
             clientId: 'analyz',
             brokers: ['localhost:9092'],
           },
-          producerOnlyMode: true,
+          producerOnlyMode: false,
           consumer: {
             groupId: 'neural',
           },

@@ -1,5 +1,3 @@
-from numpy import loadtxt
-
 import numpy as np
 
 from tensorflow import keras

@@ -1,35 +1,21 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateAnalyzDto } from './dto/create-analyz.dto';
-import { UpdateAnalyzDto } from './dto/update-analyz.dto';
-import { ClientKafka } from '@nestjs/microservices';
-
+import { ClientKafka, EventPattern, Payload } from '@nestjs/microservices';
+import * as crypto from 'crypto';
 @Injectable()
 export class AnalyzService {
   constructor(
     @Inject('analyz_microservi') private readonly client: ClientKafka,
   ) {}
 
-  create(createAnalyzDto: CreateAnalyzDto) {
-    return 'This action adds a new analyz';
+  onModuleInit() {
+    this.client.subscribeToResponseOf('predicate');
   }
 
-  findAll() {
-    return `This action returns all analyz`;
+  train() {
+    return this.client.emit('train', 'start_train');
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} analyz`;
-  }
-
-  update(id: number, updateAnalyzDto: UpdateAnalyzDto) {
-    return `This action updates a #${id} analyz`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} analyz`;
-  }
-  sendMessage(message: string) {
-    console.log(message);
-    return this.client.emit('train', message);
+  predicate() {
+    let id = crypto.randomUUID();
+    return this.client.send('predicate', { value: 'start_predicate', key: id });
   }
 }
