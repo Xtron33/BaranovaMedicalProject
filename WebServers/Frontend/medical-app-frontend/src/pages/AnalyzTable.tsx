@@ -1,14 +1,33 @@
-import {Button, Card, Icon, Label} from "@gravity-ui/uikit";
+import {Button, Icon, Pagination, PaginationProps} from "@gravity-ui/uikit";
 import {useTheme} from "../hooks/getTheme.ts";
 import {useNavigate} from "react-router-dom";
 import {CirclePlus} from "@gravity-ui/icons";
+import {useEffect, useState} from "react";
+import {fetchAllUser} from "../api/Analyz.api.ts";
+import {useAppDispatch, useAppSelector} from "../store/hooks.ts";
+import AnalyzTableItem from "../elements/AnalyzTableItem.tsx";
 
 
 function AnalyzTable(){
 
     const theme = useTheme()
+    const dispatch = useAppDispatch()
+
+
+    const [pagination, setPagination] = useState({page: 1, pageSize: 10})
+    const [update, setUpdate] = useState<boolean>(false)
+    const handlePagination: PaginationProps['onUpdate'] = (page,pageSize) => {
+        setPagination((prevState) => ({...prevState, page, pageSize}))
+        setUpdate(!update)
+    }
+
+    useEffect(() => {
+        fetchAllUser(dispatch, pagination.page, pagination.pageSize)
+    }, [update]);
 
     const navigate = useNavigate()
+
+    const {Tables, count} = useAppSelector(state => state.AnalyzTableReducer)
 
     return(
         <>
@@ -19,24 +38,8 @@ function AnalyzTable(){
                         Создать новый анализ <Icon data={CirclePlus}/>
                     </Button>
                 </div>
-                <Card className={"analyz-container__elem "  + theme} view="raised" type="container" size="l" >
-                    <div className={"analyz-container__elem-container"} onClick={() => navigate("./records")}>
-                        <span className={"analyz-container__elem-container__text"}>Иванов_Иван_Иванович_07.09.2023</span>
-                        <Label className={"analyz-container__elem-container__label-"+"good"} size={"m"} theme="success">Развитие в течение 10 лет</Label>
-                    </div>
-                </Card>
-                <Card className={"analyz-container__elem "  + theme} view="raised" type="container" size="l" >
-                    <div className={"analyz-container__elem-container"} onClick={() => navigate("./records")}>
-                        <span className={"analyz-container__elem-container__text"}>Иванов_Иван_Иванович_07.09.2023</span>
-                        <Label className={"analyz-container__elem-container__label-"+"soso"} size={"m"} theme="warning">Развитие в течение 5 лет</Label>
-                    </div>
-                </Card>
-                <Card className={"analyz-container__elem "  + theme} view="raised" type="container" size="l" >
-                    <div className={"analyz-container__elem-container"} onClick={() => navigate("./records")}>
-                        <span className={"analyz-container__elem-container__text"}>Иванов_Иван_Иванович_07.09.2023</span>
-                        <Label className={"analyz-container__elem-container__label-"+"bad"} size={"m"} theme="danger">Развитие в течение 1 лет</Label>
-                    </div>
-                </Card>
+                {Tables.map((elem) => <AnalyzTableItem item={elem} theme={theme}/>)}
+                <Pagination className="admin-container-pagination" pageSizeOptions={[10,15,20]} compact={true} showInput={true} page={pagination.page} pageSize={pagination.pageSize} total={count} onUpdate={handlePagination}/>
             </div>
         </>
     )

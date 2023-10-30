@@ -51,6 +51,8 @@ export class UserController {
     return this.userService.getColumnNames();
   }
   @Get(':id')
+  @Roles(['admin', 'super-admin'])
+  @UseGuards(JwtAuthGuard, RolesGuard)
   findOne(@Param('id') id: number) {
     return this.userService.findOneId(id);
   }

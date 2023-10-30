@@ -16,6 +16,7 @@ const AdminMenu = lazy(() => import("../AdminDashboard/pages/AdminMenu.tsx"))
 const UserTable = lazy(() => import("../AdminDashboard/pages/Users/UserTable.tsx"))
 const UserEdit = lazy(() => import("../AdminDashboard/pages/Users/UserEdit.tsx"))
 const AnalyzTable = lazy(() => import("../pages/AnalyzTable.tsx"))
+const AnalyzViewer = lazy(() => import("../pages/AnalyzViewer.tsx"))
 
 const router = createBrowserRouter([
     {
@@ -68,6 +69,14 @@ const router = createBrowserRouter([
             {
                 index: true,
                 element: <ProtecedRoutes><AnalyzTable/></ProtecedRoutes>
+            },
+            {
+                path:"/analyz/new",
+                element: <ProtecedRoutes><AnalyzViewer/></ProtecedRoutes>
+            },
+            {
+                path:"/analyz/record/:id",
+                element: <ProtecedRoutes><AnalyzViewer/></ProtecedRoutes>
             }
         ]
     }

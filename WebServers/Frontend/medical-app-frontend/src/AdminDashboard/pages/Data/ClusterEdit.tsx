@@ -6,7 +6,7 @@ import {CirclePlus} from "@gravity-ui/icons";
 import {DataSlice} from "../../store/slice/DataSlice.ts";
 import {useEffect, useState} from "react";
 import {ITable} from "../../store/models/ITable.ts";
-import {applyData, fetchDataById, updateDataById} from "../../api/Data.api.ts";
+import {applyData, fetchDataById, startTrain, updateDataById} from "../../api/Data.api.ts";
 
 
 function ClusterEdit(){
@@ -118,7 +118,7 @@ function ClusterEdit(){
     function apply(data: ITable){
 
         if(id.dataId!=null){
-            updateDataById(data,id.dataId)
+            updateDataById(data,id.dataId).finally(() => startTrain())
             add({
                 name: "cluster-edit",
                 title: "Запись обновленна",
@@ -127,7 +127,7 @@ function ClusterEdit(){
             });
         }
         else{
-            applyData(data);
+            applyData(data).finally(() => startTrain());
             add({
                 name: "cluster-edit",
                 title: "Запись добавлена",
@@ -314,7 +314,7 @@ function ClusterEdit(){
                                 <h3>4 — от 10 лет</h3>
                             </div>
                         }><span className="admin-container__opt-text">Группа риска</span></Tooltip>
-                        <RadioButton name="answer" onUpdate={(value) => dispatch(DataSlice.actions.setAnswer(value === "-2"? null : parseInt(value)))} value={Data.Ultrasound===null ? "-2" : Data.Ultrasound.toString()} options={answerOpt} size="xl"/>
+                        <RadioButton name="answer" onUpdate={(value) => dispatch(DataSlice.actions.setAnswer(value === "-2"? null : parseInt(value)))} value={Data.answer===null ? "-2" : Data.answer.toString()} options={answerOpt} size="xl"/>
                     </div>
 
                     <Button onClick={() => apply(Data)} width="auto" view="action" size="xl" className="admin-container__opt admin-container__but">

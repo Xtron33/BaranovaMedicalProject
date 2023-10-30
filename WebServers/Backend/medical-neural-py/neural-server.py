@@ -45,10 +45,10 @@ for mes in consumer:
         dataset = pd.read_sql('SELECT * FROM datum', connect)
         dataset = dataset.fillna(0)
 
-        X = dataset.iloc[:len(dataset.index), :33].to_numpy()
-        y = dataset.iloc[:len(dataset.index), 33].to_numpy()
+        X = dataset.iloc[:len(dataset.index), 1:34].to_numpy()
+        y = dataset.iloc[:len(dataset.index), 34].to_numpy()
 
-        model.fit(X, y, epochs=500, batch_size=10)
+        model.fit(X, y, epochs=1000, batch_size=10)
         _, accuracy = model.evaluate(X, y)
         print('Accuracy: %.2f' % (accuracy*100))
 
@@ -56,7 +56,23 @@ for mes in consumer:
     if mes.topic == 'predicate':
         print('predicate start ')
 
+        json_obj = json.loads(mes.value.decode('UTF-8'))
+
+        obj = pd.DataFrame([json_obj])
+
+        obj = obj.fillna(0)
+
+        arr = obj.iloc[:1, 3:36].to_numpy()
+
+        prediction = model.predict(arr)
+
         head = [(mes.headers[0][0], mes.headers[0][1]),
                 ("kafka_nest-is-disposed", bytes('', 'utf-8'))]
-        print(head)
-        producer.send('predicate.reply', value=b'done', headers=head)
+
+        print(np.argmax(prediction[0]))
+
+        res = str(np.argmax(prediction[0])).encode('UTF-8')
+
+        print(res)
+
+        producer.send('predicate.reply', value=res, headers=head)

@@ -12,7 +12,7 @@ import {
     withTableSelection
 } from "@gravity-ui/uikit";
 import {useEffect, useState} from "react";
-import {DeleteDateById, fetchDataPagination} from "../../api/Data.api.ts";
+import {DeleteDateById, fetchDataPagination, startTrain} from "../../api/Data.api.ts";
 import {CirclePlus, CloudArrowUpIn, TrashBin} from "@gravity-ui/icons";
 import { useNavigate } from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks.ts";
@@ -98,6 +98,7 @@ function ClusterTable(){
                 setUpdate(!update)
                 dispatch(UploadProgresSlice.actions.setIsLoading(false))
                 setIsImportOpen(false)
+                startTrain();
                 add({
                     name: "import-file",
                     title: "Данные из файла были успешно импортированы",

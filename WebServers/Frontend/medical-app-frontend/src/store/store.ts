@@ -5,6 +5,8 @@ import UserTabelReducer from "../AdminDashboard/store/slice/UserTableSlice.ts"
 import UserReducer from "../store/slice/UserSlice.ts"
 import UserEditReducer from "../AdminDashboard/store/slice/UserEditSlice.ts"
 import ProgressReducer from "../AdminDashboard/store/slice/UploadProgresSlice.ts"
+import AnalyzReducer from "./slice/AnalyzSlice.ts"
+import AnalyzTableReducer from "./slice/AnalyzTableSlice.ts"
 
 const rootReducer = combineReducers({
     TableReducer,
@@ -12,7 +14,9 @@ const rootReducer = combineReducers({
     UserReducer,
     UserTabelReducer,
     UserEditReducer,
-    ProgressReducer
+    ProgressReducer,
+    AnalyzReducer,
+    AnalyzTableReducer
 
 })
 export const store = () => {return configureStore({

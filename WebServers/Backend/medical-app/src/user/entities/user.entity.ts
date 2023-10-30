@@ -2,9 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Analyz } from '../../analyz/entities/analyz.entity';
 
 @Entity()
 export class User {
@@ -25,4 +27,7 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => Analyz, (analyz) => analyz.user)
+  analyzs: Analyz[];
 }

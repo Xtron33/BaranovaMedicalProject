@@ -93,3 +93,12 @@ export const fetchDataPagination = async (dispatch: AppDispatch, page: number, l
         dispatch(TableSlice.actions.setIsLoading(false))
     }
 }
+
+export const startTrain = async () => {
+    try{
+        return await instance.post('http://localhost:5000/api/analyz/train')
+    }
+    catch (e){
+        return e
+    }
+}
