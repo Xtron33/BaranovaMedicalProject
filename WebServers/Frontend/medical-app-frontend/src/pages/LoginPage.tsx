@@ -8,7 +8,7 @@ import {Navigate, useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../store/hooks.ts";
 import {useAuth} from "../hooks/useAuth.ts";
 import {useTheme} from "../hooks/getTheme.ts";
-import Header from "../elements/Header.tsx";
+import Header from "../component/Header.tsx";
 
 
 function LoginPage(){

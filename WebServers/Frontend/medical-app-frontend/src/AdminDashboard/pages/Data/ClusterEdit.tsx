@@ -56,7 +56,7 @@ function ClusterEdit(){
         }},[isLoading])}
     else{
         useEffect(() => {
-            dispatch(DataSlice.actions.resetState)
+            dispatch(DataSlice.actions.resetState())
         }, []);
 
     }

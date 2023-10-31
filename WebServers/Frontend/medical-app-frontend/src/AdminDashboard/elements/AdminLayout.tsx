@@ -1,6 +1,6 @@
 import {FC} from "react";
 import { Outlet } from "react-router-dom";
-import Header from "../../elements/Header.tsx";
+import Header from "../../component/Header.tsx";
 
 
 import '../styles/AdminCluster.scss'

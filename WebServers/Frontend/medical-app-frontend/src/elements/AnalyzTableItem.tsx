@@ -1,6 +1,7 @@
 import {IAnalyz} from "../store/models/IAnalyz.ts";
 import {Card, Label} from "@gravity-ui/uikit";
 import {useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
 
 function AnalyzTableItem(props : {item: IAnalyz, theme: string}){
     const navigate = useNavigate();
@@ -36,12 +37,18 @@ function AnalyzTableItem(props : {item: IAnalyz, theme: string}){
         4: "В процессе обработки."
     }
 
+    const [time_stamp, setTimestamp] = useState<Date>(new Date())
+    useEffect(() => {
+        if(props.item.createdAt !== undefined) {
+            setTimestamp(new Date(props.item.createdAt))
+        }
+    }, []);
     return(
         <>
             <Card className={"analyz-container__elem "  + props.theme} view="raised" type="container" size="l" >
-                <div className={"analyz-container__elem-container"} onClick={() => navigate("./records")}>
-                    <span className={"analyz-container__elem-container__text"}>{props.item.lastname}_{props.item.firstname}_{props.item.middlename}_{props.item.createdAt}</span>
-                    <Label className={"analyz-container__elem-container__label-"+condition[props.item.answer ? props.item.answer : 4]} size={"m"} theme={theme[props.item.answer ? props.item.answer : 4]}>{conditionLabel[props.item.answer]}</Label>
+                <div className={"analyz-container__elem-container"} onClick={() => navigate("./record/"+props.item.id)}>
+                    <span className={"analyz-container__elem-container__text"}>{props.item.lastname}_{props.item.firstname}_{props.item.middlename}_{time_stamp.toLocaleDateString('ru-RU')}</span>
+                    <Label className={"analyz-container__elem-container__label-"+condition[props.item.answer !== undefined ? props.item.answer : 4]} size={"m"} theme={theme[props.item.answer !== undefined ? props.item.answer : 4]}>{conditionLabel[props.item.answer]}</Label>
                 </div>
             </Card>
         </>

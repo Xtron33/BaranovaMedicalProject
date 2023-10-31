@@ -38,7 +38,7 @@ export interface IAnalyz{
     Ultrasound: number | null,
     metastasa: number | null,
     answer: number,
-    createdAt?: string,
-    updatedAt?: string
+    createdAt?: Date,
+    updatedAt?: Date
 
 }

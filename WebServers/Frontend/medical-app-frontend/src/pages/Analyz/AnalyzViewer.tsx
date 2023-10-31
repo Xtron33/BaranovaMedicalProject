@@ -1,12 +1,12 @@
 import {Button, Icon, Label, Modal, RadioButton, Switch, TextInput, useToaster} from "@gravity-ui/uikit";
-import {analizeOpt, genderOpt, metastasaOpt, ultrasoundOpt} from "../AdminDashboard/utils/DataRadioConst.ts";
-import {useAppDispatch, useAppSelector} from "../store/hooks.ts";
+import {analizeOpt, genderOpt, metastasaOpt, ultrasoundOpt} from "../../AdminDashboard/utils/DataRadioConst.ts";
+import {useAppDispatch, useAppSelector} from "../../store/hooks.ts";
 import {useNavigate, useParams} from "react-router-dom";
-import {ArrowShapeUpFromLine} from "@gravity-ui/icons";
+import {ArrowRightFromSquare, ArrowShapeUpFromLine} from "@gravity-ui/icons";
 import {useEffect, useState} from "react";
-import {AnalyzSlice} from "../store/slice/AnalyzSlice.ts";
-import {IAnalyz} from "../store/models/IAnalyz.ts";
-import {createAnalyz, fetchOneById, predicate} from "../api/Analyz.api.ts";
+import {AnalyzSlice} from "../../store/slice/AnalyzSlice.ts";
+import {IAnalyz} from "../../store/models/IAnalyz.ts";
+import {createAnalyz, fetchOneById, predicate} from "../../api/Analyz.api.ts";
 import {RingLoader} from "react-spinners";
 
 
@@ -14,8 +14,10 @@ import {RingLoader} from "react-spinners";
 function AnalyzViewer(){
 
     type dataId = {
-        dataId: string;
+        id: string;
     };
+
+    const [isDone, setIsDone] = useState<boolean>(false)
 
     const id = useParams<dataId>()
 
@@ -59,12 +61,14 @@ function AnalyzViewer(){
     const [angiopathyVal, setAngiopathyVal] = useState<boolean>(false)
     const [tumorsVal, setTumorsVal] = useState<boolean>(false)
 
-    if(id.dataId!=null){
+
+    if(id.id!=null){
         useEffect(()=>{
-            fetchOneById(dispatch, id.dataId)
+            fetchOneById(dispatch, id.id)
 
         },[])
         useEffect(() => {
+            setIsDone(true)
             if(Data.cardivascularSystem===1){
                 setCardioVal(true)
             }
@@ -79,10 +83,15 @@ function AnalyzViewer(){
             }
             if(Data.tumorsOtherLocalization===1){
                 setTumorsVal(true)
-            }},[isLoading])}
+            }
+            if(Data.createdAt !== undefined){
+                setTimestamp(new Date(Data.createdAt))
+            }
+
+            },[isLoading])}
     else{
         useEffect(() => {
-            dispatch(AnalyzSlice.actions.resetState)
+            dispatch(AnalyzSlice.actions.resetState())
         }, []);
 
     }
@@ -143,12 +152,13 @@ function AnalyzViewer(){
 
     function apply(data: IAnalyz){
 
-        if(id.dataId!=null){
+        if(id.id!=null){
         }
         else{
+            setProgress(true)
+            setProgressModal(true)
             predicate(data).then((answer) => {
-                setProgress(true)
-                setProgressModal(true)
+
                 if(answer && typeof answer.data === "number"){
                     const newAnalyz: IAnalyz = {...data, answer:answer.data}
                     createAnalyz(newAnalyz).then((data)=>{
@@ -175,33 +185,43 @@ function AnalyzViewer(){
         //navigate("../");
     }
 
+    const [time_stamp, setTimestamp] = useState<Date>(new Date)
+
+
     return(
-        <div className={"admin"}>
+        <div className={"admin"}>{
+            isDone ?
+                <div className={"analizViewer_text"}>{Data.lastname}_{Data.firstname}_{Data.middlename}_{time_stamp.toLocaleDateString('ru-RU')}</div>
+                :
+
+                <div className={"analizViewer_text"}>Новый анализ</div>
+        }
+
             <div className="admin-container">
 
                 <div className="admin-container__col">
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">Фамилия</span>
-                        <TextInput name="lastname" onUpdate={(value) => dispatch(AnalyzSlice.actions.setLastname(value))} value={Data.lastname} size="xl"/>
+                        <TextInput disabled={isDone} name="lastname" onUpdate={(value) => dispatch(AnalyzSlice.actions.setLastname(value))} value={Data.lastname} size="xl"/>
                     </div>
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">Имя</span>
-                        <TextInput name="firstname" onUpdate={(value) => dispatch(AnalyzSlice.actions.setFirstname(value))} value={Data.firstname} size="xl"/>
+                        <TextInput disabled={isDone} name="firstname" onUpdate={(value) => dispatch(AnalyzSlice.actions.setFirstname(value))} value={Data.firstname} size="xl"/>
                     </div>
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">Отчество</span>
-                        <TextInput name="middlename" onUpdate={(value) => dispatch(AnalyzSlice.actions.setMiddlename(value))} value={Data.middlename} size="xl"/>
+                        <TextInput disabled={isDone} name="middlename" onUpdate={(value) => dispatch(AnalyzSlice.actions.setMiddlename(value))} value={Data.middlename} size="xl"/>
                     </div>
 
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">Пол</span>
-                        <RadioButton name="gender" onUpdate={(value) => dispatch(AnalyzSlice.actions.setGender(value === "-2"? null : parseInt(value)))} value={Data.gender===null ? "-2" : Data.gender.toString()} options={genderOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="gender" onUpdate={(value) => dispatch(AnalyzSlice.actions.setGender(value === "-2"? null : parseInt(value)))} value={Data.gender===null ? "-2" : Data.gender.toString()} options={genderOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">Гормональный фон</span>
-                        <RadioButton name="hormon" onUpdate={(value) => dispatch(AnalyzSlice.actions.setHormonalBackground(value === "-2"? null : parseInt(value)))} value={Data.hormonalBackground===null ? "-2" : Data.hormonalBackground.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="hormon" onUpdate={(value) => dispatch(AnalyzSlice.actions.setHormonalBackground(value === "-2"? null : parseInt(value)))} value={Data.hormonalBackground===null ? "-2" : Data.hormonalBackground.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__switch">
@@ -209,61 +229,61 @@ function AnalyzViewer(){
                         Сопутсвующие заболевания
                     </span>
 
-                        <Switch className="admin-container__switch-opt" size="l" checked={cardioVal} onUpdate={(event) => changeCardio(event)}>Сердечно сосудистая система</Switch>
+                        <Switch disabled={isDone} className="admin-container__switch-opt" size="l" checked={cardioVal} onUpdate={(event) => changeCardio(event)}>Сердечно сосудистая система</Switch>
 
-                        <Switch className="admin-container__switch-opt" size="l" checked={geniVal} onUpdate={(event) => changeGeni(event)}>Мочеполовая система</Switch>
+                        <Switch disabled={isDone} className="admin-container__switch-opt" size="l" checked={geniVal} onUpdate={(event) => changeGeni(event)}>Мочеполовая система</Switch>
 
-                        <Switch className="admin-container__switch-opt" size="l" checked={gastrVal} onUpdate={(event) => changeGastr(event)}>Желудочно кишечный тракт</Switch>
+                        <Switch disabled={isDone} className="admin-container__switch-opt" size="l" checked={gastrVal} onUpdate={(event) => changeGastr(event)}>Желудочно кишечный тракт</Switch>
 
-                        <Switch className="admin-container__switch-opt" size="l" checked={angiopathyVal} onUpdate={(event) => changeAngiopathy(event)}>Ангиопатия</Switch>
+                        <Switch disabled={isDone} className="admin-container__switch-opt" size="l" checked={angiopathyVal} onUpdate={(event) => changeAngiopathy(event)}>Ангиопатия</Switch>
 
-                        <Switch className="admin-container__switch-opt" size="l" checked={tumorsVal} onUpdate={(event) => changeTumors(event)}>Опухоли другой локализации</Switch>
+                        <Switch disabled={isDone} className="admin-container__switch-opt" size="l" checked={tumorsVal} onUpdate={(event) => changeTumors(event)}>Опухоли другой локализации</Switch>
                     </div>
 
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">RBC</span>
-                        <RadioButton name="RBC" onUpdate={(value) => dispatch(AnalyzSlice.actions.setRBC(value === "-2"? null : parseInt(value)))} value={Data.RBC===null ? "-2" : Data.RBC.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="RBC" onUpdate={(value) => dispatch(AnalyzSlice.actions.setRBC(value === "-2"? null : parseInt(value)))} value={Data.RBC===null ? "-2" : Data.RBC.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">MCV</span>
-                        <RadioButton name="MCV" onUpdate={(value) => dispatch(AnalyzSlice.actions.setMCV(value === "-2"? null : parseInt(value)))} value={Data.MCV===null ? "-2" : Data.MCV.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="MCV" onUpdate={(value) => dispatch(AnalyzSlice.actions.setMCV(value === "-2"? null : parseInt(value)))} value={Data.MCV===null ? "-2" : Data.MCV.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">RDW</span>
-                        <RadioButton name="RDW" onUpdate={(value) => dispatch(AnalyzSlice.actions.setRDW(value === "-2"? null : parseInt(value)))} value={Data.RDW===null ? "-2" : Data.RDW.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="RDW" onUpdate={(value) => dispatch(AnalyzSlice.actions.setRDW(value === "-2"? null : parseInt(value)))} value={Data.RDW===null ? "-2" : Data.RDW.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">RDWa</span>
-                        <RadioButton name="RDWa" onUpdate={(value) => dispatch(AnalyzSlice.actions.setRDWa(value === "-2"? null : parseInt(value)))} value={Data.RDWa===null ? "-2" : Data.RDWa.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="RDWa" onUpdate={(value) => dispatch(AnalyzSlice.actions.setRDWa(value === "-2"? null : parseInt(value)))} value={Data.RDWa===null ? "-2" : Data.RDWa.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">HCT</span>
-                        <RadioButton name="HCT" onUpdate={(value) => dispatch(AnalyzSlice.actions.setHCT(value === "-2"? null : parseInt(value)))} value={Data.HCT===null ? "-2" : Data.HCT.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="HCT" onUpdate={(value) => dispatch(AnalyzSlice.actions.setHCT(value === "-2"? null : parseInt(value)))} value={Data.HCT===null ? "-2" : Data.HCT.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">PLT</span>
-                        <RadioButton name="PLT" onUpdate={(value) => dispatch(AnalyzSlice.actions.setPLT(value === "-2"? null : parseInt(value)))} value={Data.PLT===null ? "-2" : Data.PLT.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="PLT" onUpdate={(value) => dispatch(AnalyzSlice.actions.setPLT(value === "-2"? null : parseInt(value)))} value={Data.PLT===null ? "-2" : Data.PLT.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">MPV</span>
-                        <RadioButton name="MPV" onUpdate={(value) => dispatch(AnalyzSlice.actions.setMPV(value === "-2"? null : parseInt(value)))} value={Data.MPV===null ? "-2" : Data.MPV.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="MPV" onUpdate={(value) => dispatch(AnalyzSlice.actions.setMPV(value === "-2"? null : parseInt(value)))} value={Data.MPV===null ? "-2" : Data.MPV.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">PDW</span>
-                        <RadioButton name="PDW" onUpdate={(value) => dispatch(AnalyzSlice.actions.setPDW(value === "-2"? null : parseInt(value)))} value={Data.PDW===null ? "-2" : Data.PDW.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="PDW" onUpdate={(value) => dispatch(AnalyzSlice.actions.setPDW(value === "-2"? null : parseInt(value)))} value={Data.PDW===null ? "-2" : Data.PDW.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">PCT</span>
-                        <RadioButton name="PCT" onUpdate={(value) => dispatch(AnalyzSlice.actions.setPCT(value === "-2"? null : parseInt(value)))} value={Data.PCT===null ? "-2" : Data.PCT.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="PCT" onUpdate={(value) => dispatch(AnalyzSlice.actions.setPCT(value === "-2"? null : parseInt(value)))} value={Data.PCT===null ? "-2" : Data.PCT.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
 
@@ -273,92 +293,99 @@ function AnalyzViewer(){
                 <div className="admin-container__col">
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">LPCR</span>
-                        <RadioButton name="LPCR" onUpdate={(value) => dispatch(AnalyzSlice.actions.setLPCR(value === "-2"? null : parseInt(value)))} value={Data.LPCR===null ? "-2" : Data.LPCR.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="LPCR" onUpdate={(value) => dispatch(AnalyzSlice.actions.setLPCR(value === "-2"? null : parseInt(value)))} value={Data.LPCR===null ? "-2" : Data.LPCR.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">WBC</span>
-                        <RadioButton name="WBC" onUpdate={(value) => dispatch(AnalyzSlice.actions.setWBC(value === "-2"? null : parseInt(value)))} value={Data.WBC===null ? "-2" : Data.WBC.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="WBC" onUpdate={(value) => dispatch(AnalyzSlice.actions.setWBC(value === "-2"? null : parseInt(value)))} value={Data.WBC===null ? "-2" : Data.WBC.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">HGB</span>
-                        <RadioButton name="HGB" onUpdate={(value) => dispatch(AnalyzSlice.actions.setHGB(value === "-2"? null : parseInt(value)))} value={Data.HGB===null ? "-2" : Data.HGB.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="HGB" onUpdate={(value) => dispatch(AnalyzSlice.actions.setHGB(value === "-2"? null : parseInt(value)))} value={Data.HGB===null ? "-2" : Data.HGB.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">MCH</span>
-                        <RadioButton name="MCH" onUpdate={(value) => dispatch(AnalyzSlice.actions.setMCH(value === "-2"? null : parseInt(value)))} value={Data.MCH===null ? "-2" : Data.MCH.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="MCH" onUpdate={(value) => dispatch(AnalyzSlice.actions.setMCH(value === "-2"? null : parseInt(value)))} value={Data.MCH===null ? "-2" : Data.MCH.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">MCHC</span>
-                        <RadioButton name="MCHC" onUpdate={(value) => dispatch(AnalyzSlice.actions.setMCHC(value === "-2"? null : parseInt(value)))} value={Data.MCHC===null ? "-2" : Data.MCHC.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="MCHC" onUpdate={(value) => dispatch(AnalyzSlice.actions.setMCHC(value === "-2"? null : parseInt(value)))} value={Data.MCHC===null ? "-2" : Data.MCHC.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">LYM</span>
-                        <RadioButton name="LYM" onUpdate={(value) => dispatch(AnalyzSlice.actions.setLYM(value === "-2"? null : parseInt(value)))} value={Data.LYM===null ? "-2" : Data.LYM.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="LYM" onUpdate={(value) => dispatch(AnalyzSlice.actions.setLYM(value === "-2"? null : parseInt(value)))} value={Data.LYM===null ? "-2" : Data.LYM.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">GRAN</span>
-                        <RadioButton name="GRAN" onUpdate={(value) => dispatch(AnalyzSlice.actions.setGRAN(value === "-2"? null : parseInt(value)))} value={Data.GRAN===null ? "-2" : Data.GRAN.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="GRAN" onUpdate={(value) => dispatch(AnalyzSlice.actions.setGRAN(value === "-2"? null : parseInt(value)))} value={Data.GRAN===null ? "-2" : Data.GRAN.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">MID</span>
-                        <RadioButton name="MID" onUpdate={(value) => dispatch(AnalyzSlice.actions.setMID(value === "-2"? null : parseInt(value)))} value={Data.MID===null ? "-2" : Data.MID.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="MID" onUpdate={(value) => dispatch(AnalyzSlice.actions.setMID(value === "-2"? null : parseInt(value)))} value={Data.MID===null ? "-2" : Data.MID.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">LIM%</span>
-                        <RadioButton name="LIMP" onUpdate={(value) => dispatch(AnalyzSlice.actions.setLIMProcent(value === "-2"? null : parseInt(value)))} value={Data.LIMProcent===null ? "-2" : Data.LIMProcent.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="LIMP" onUpdate={(value) => dispatch(AnalyzSlice.actions.setLIMProcent(value === "-2"? null : parseInt(value)))} value={Data.LIMProcent===null ? "-2" : Data.LIMProcent.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">GRAN%</span>
-                        <RadioButton name="GRANP" onUpdate={(value) => dispatch(AnalyzSlice.actions.setGRAProcent(value === "-2"? null : parseInt(value)))} value={Data.GRAProcent===null ? "-2" : Data.GRAProcent.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="GRANP" onUpdate={(value) => dispatch(AnalyzSlice.actions.setGRAProcent(value === "-2"? null : parseInt(value)))} value={Data.GRAProcent===null ? "-2" : Data.GRAProcent.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">MID%</span>
-                        <RadioButton name="MIDP" onUpdate={(value) => dispatch(AnalyzSlice.actions.setMIDProcent(value === "-2"? null : parseInt(value)))} value={Data.MIDProcent===null ? "-2" : Data.MIDProcent.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="MIDP" onUpdate={(value) => dispatch(AnalyzSlice.actions.setMIDProcent(value === "-2"? null : parseInt(value)))} value={Data.MIDProcent===null ? "-2" : Data.MIDProcent.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">NEUT</span>
-                        <RadioButton name="NEUT" onUpdate={(value) => dispatch(AnalyzSlice.actions.setNEUT(value === "-2"? null : parseInt(value)))} value={Data.NEUT===null ? "-2" : Data.NEUT.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="NEUT" onUpdate={(value) => dispatch(AnalyzSlice.actions.setNEUT(value === "-2"? null : parseInt(value)))} value={Data.NEUT===null ? "-2" : Data.NEUT.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">BO</span>
-                        <RadioButton name="BO" onUpdate={(value) => dispatch(AnalyzSlice.actions.setBO(value === "-2"? null : parseInt(value)))} value={Data.BO===null ? "-2" : Data.BO.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="BO" onUpdate={(value) => dispatch(AnalyzSlice.actions.setBO(value === "-2"? null : parseInt(value)))} value={Data.BO===null ? "-2" : Data.BO.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">BASO</span>
-                        <RadioButton name="BASO" onUpdate={(value) => dispatch(AnalyzSlice.actions.setBASO(value === "-2"? null : parseInt(value)))} value={Data.BASO===null ? "-2" : Data.BASO.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="BASO" onUpdate={(value) => dispatch(AnalyzSlice.actions.setBASO(value === "-2"? null : parseInt(value)))} value={Data.BASO===null ? "-2" : Data.BASO.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">MON</span>
-                        <RadioButton name="MON" onUpdate={(value) => dispatch(AnalyzSlice.actions.setMON(value === "-2"? null : parseInt(value)))} value={Data.MON===null ? "-2" : Data.MON.toString()} options={analizeOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="MON" onUpdate={(value) => dispatch(AnalyzSlice.actions.setMON(value === "-2"? null : parseInt(value)))} value={Data.MON===null ? "-2" : Data.MON.toString()} options={analizeOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">УЗИ</span>
-                        <RadioButton name="UltraSound" onUpdate={(value) => dispatch(AnalyzSlice.actions.setUltrasound(value === "-2"? null : parseInt(value)))} value={Data.Ultrasound===null ? "-2" : Data.Ultrasound.toString()} options={ultrasoundOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="UltraSound" onUpdate={(value) => dispatch(AnalyzSlice.actions.setUltrasound(value === "-2"? null : parseInt(value)))} value={Data.Ultrasound===null ? "-2" : Data.Ultrasound.toString()} options={ultrasoundOpt} size="xl"/>
                     </div>
 
                     <div className="admin-container__opt">
                         <span className="admin-container__opt-text">Метастазы</span>
-                        <RadioButton name="metastasa" onUpdate={(value) => dispatch(AnalyzSlice.actions.setMetastasa(value === "-2"? null : parseInt(value)))} value={Data.metastasa===null ? "-2" : Data.metastasa.toString()} options={metastasaOpt} size="xl"/>
+                        <RadioButton disabled={isDone} name="metastasa" onUpdate={(value) => dispatch(AnalyzSlice.actions.setMetastasa(value === "-2"? null : parseInt(value)))} value={Data.metastasa===null ? "-2" : Data.metastasa.toString()} options={metastasaOpt} size="xl"/>
                     </div>
+                    {
+                        !isDone ?
+                            <Button onClick={() => apply(Data)} width="auto" view="action" size="xl" className="admin-container__opt admin-container__but">
+                                Отправить на анализ<Icon data={ArrowShapeUpFromLine}/>
+                            </Button>
+                            :
+                            <Button onClick={() => navigate("../")} width="auto" view="action" size="xl" className="admin-container__opt admin-container__but">
+                                Вернуться на главную<Icon data={ArrowRightFromSquare}/>
+                            </Button>
+                    }
 
-                    <Button onClick={() => apply(Data)} width="auto" view="action" size="xl" className="admin-container__opt admin-container__but">
-                        Отправить на анализ<Icon data={ArrowShapeUpFromLine}/>
-                    </Button>
                 </div>
 
             </div>

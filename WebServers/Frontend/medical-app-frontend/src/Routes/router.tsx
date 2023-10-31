@@ -6,7 +6,7 @@ import AdminLayout from "../AdminDashboard/elements/AdminLayout.tsx";
 
 import loadingPage from "../elements/loadingPage.tsx";
 import ErrorPageAdmin from "../AdminDashboard/elements/ErrorPageAdmin.tsx";
-import Layout from "../elements/Layout.tsx";
+import Layout from "../component/Layout.tsx";
 import ProtecedRoutes from "./ProtecedRoutes.tsx";
 
 const ClusterTable = lazy(() => import("../AdminDashboard/pages/Data/ClusterTable.tsx"))
@@ -15,8 +15,8 @@ const LoginPage = lazy(() => import("../pages/LoginPage.tsx"))
 const AdminMenu = lazy(() => import("../AdminDashboard/pages/AdminMenu.tsx"))
 const UserTable = lazy(() => import("../AdminDashboard/pages/Users/UserTable.tsx"))
 const UserEdit = lazy(() => import("../AdminDashboard/pages/Users/UserEdit.tsx"))
-const AnalyzTable = lazy(() => import("../pages/AnalyzTable.tsx"))
-const AnalyzViewer = lazy(() => import("../pages/AnalyzViewer.tsx"))
+const AnalyzTable = lazy(() => import("../pages/Analyz/AnalyzTable.tsx"))
+const AnalyzViewer = lazy(() => import("../pages/Analyz/AnalyzViewer.tsx"))
 
 const router = createBrowserRouter([
     {

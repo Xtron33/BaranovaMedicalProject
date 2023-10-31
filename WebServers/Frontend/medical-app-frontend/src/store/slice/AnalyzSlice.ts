@@ -172,7 +172,7 @@ export const AnalyzSlice = createSlice({
         setMetastasa(state, action: PayloadAction<number | null>){
             state.Data.metastasa = action.payload
         },
-        setAnswer(state, action: PayloadAction<number | null>){
+        setAnswer(state, action: PayloadAction<number>){
             state.Data.answer = action.payload
         },
         resetState(){
