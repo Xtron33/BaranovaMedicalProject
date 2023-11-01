@@ -7,7 +7,7 @@ import {useEffect, useState} from "react";
 import {AnalyzSlice} from "../../store/slice/AnalyzSlice.ts";
 import {IAnalyz} from "../../store/models/IAnalyz.ts";
 import {createAnalyz, fetchOneById, predicate} from "../../api/Analyz.api.ts";
-import {RingLoader} from "react-spinners";
+import {CircleLoader} from "react-spinners";
 
 
 
@@ -191,7 +191,7 @@ function AnalyzViewer(){
     return(
         <div className={"admin"}>{
             isDone ?
-                <div className={"analizViewer_text"}>{Data.lastname}_{Data.firstname}_{Data.middlename}_{time_stamp.toLocaleDateString('ru-RU')}</div>
+                <div className={"analizViewer_text"}>{Data.lastname}_{Data.firstname}_{Data.middlename}_{time_stamp.toLocaleDateString('ru-RU')}<Label theme={conditionTheme[Data.answer]} size={"m"}>{conditionLabel[Data.answer]}</Label></div>
                 :
 
                 <div className={"analizViewer_text"}>Новый анализ</div>
@@ -396,7 +396,9 @@ function AnalyzViewer(){
                 {
                     isProgress ?
                         <div className="admin-modal-container">
-                            <RingLoader size={110} color="#FFBE5C"/>
+                            <div className="admin-modal-container-loader">
+                                <CircleLoader size={100} color="#FFBE5C"/>
+                            </div>
                         </div>
                         :
 

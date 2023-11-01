@@ -7,7 +7,7 @@ import {
     House,
     Magnifier,
     Moon,
-    Persons,
+    Persons, RectanglePulse,
     Sun
 } from "@gravity-ui/icons";
 import {useEmail} from "../hooks/useEmail.ts";
@@ -90,6 +90,11 @@ function Header(props: { isAdminPage: boolean }){
                                     icon: <Icon size={25} data={Persons} />,
                                     action: () => navigate("./users"),
                                     text: 'Пользователи',
+                                },
+                                {
+                                    icon: <Icon size={25} data={RectanglePulse} />,
+                                    action: () => navigate("./records"),
+                                    text: 'Анализы',
                                 }],
                             [
                                 {
@@ -117,7 +122,7 @@ function Header(props: { isAdminPage: boolean }){
                                 ],
                                 {
                                     icon: <Icon size={25} data={Magnifier} />,
-                                    action: () => navigate("./analyz"),
+                                    action: () => navigate("../analyz"),
                                     text: 'Анализы',
                                 },[
 

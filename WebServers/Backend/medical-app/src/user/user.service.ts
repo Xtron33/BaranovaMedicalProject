@@ -101,7 +101,7 @@ export class UserService {
     const data = this.userRepository.metadata.propertiesMap;
     let newData = [];
     for (let i in data) {
-      if (i !== 'password') {
+      if (i !== 'password' && i !== 'analyzs') {
         newData.push({ id: data[i] });
       }
     }

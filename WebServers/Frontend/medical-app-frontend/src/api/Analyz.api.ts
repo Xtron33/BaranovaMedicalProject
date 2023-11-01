@@ -11,7 +11,8 @@ export const fetchAllData = async (dispatch: AppDispatch, page: number, limit: n
         const colums = await instance.get<TableColumnConfig<TableDataItem>[]>('http://localhost:5000/api/analyz/columns')
         dispatch(AnalyzTableSlice.actions.setColums(colums.data));
         const data = await instance.get<[IAnalyz[],number]>(`http://localhost:5000/api/analyz/all?page=${page}&limit=${limit}`)
-        dispatch(AnalyzTableSlice.actions.setTable(data.data[0]))
+        const newData: IAnalyz[] = data.data[0].map((elem) => elem.user !== null && elem.user !== undefined && typeof elem.user === "object" ? {...elem, user: elem.user.email} : {...elem})
+        dispatch(AnalyzTableSlice.actions.setTable(newData))
         dispatch(AnalyzTableSlice.actions.setCount(data.data[1]))
         dispatch(AnalyzTableSlice.actions.setIsLoading(false))
 

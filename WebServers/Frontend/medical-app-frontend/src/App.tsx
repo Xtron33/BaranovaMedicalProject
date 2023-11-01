@@ -12,6 +12,7 @@ import "./styles/Loader.scss"
 import "./styles/Toaster.scss"
 import "./styles/const.scss"
 import "./styles/Page/Login.scss"
+import "./styles/skeleton.scss"
 
 
 function App() {

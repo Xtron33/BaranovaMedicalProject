@@ -39,6 +39,7 @@ export interface IAnalyz{
     metastasa: number | null,
     answer: number,
     createdAt?: Date,
-    updatedAt?: Date
+    updatedAt?: Date,
+    user?: {email: string} | string | null,
 
 }

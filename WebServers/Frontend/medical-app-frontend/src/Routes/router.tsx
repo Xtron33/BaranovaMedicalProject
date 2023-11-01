@@ -15,6 +15,7 @@ const LoginPage = lazy(() => import("../pages/LoginPage.tsx"))
 const AdminMenu = lazy(() => import("../AdminDashboard/pages/AdminMenu.tsx"))
 const UserTable = lazy(() => import("../AdminDashboard/pages/Users/UserTable.tsx"))
 const UserEdit = lazy(() => import("../AdminDashboard/pages/Users/UserEdit.tsx"))
+const AdminRecords = lazy(() => import("../AdminDashboard/pages/Records/RecordsTable.tsx"))
 const AnalyzTable = lazy(() => import("../pages/Analyz/AnalyzTable.tsx"))
 const AnalyzViewer = lazy(() => import("../pages/Analyz/AnalyzViewer.tsx"))
 
@@ -57,9 +58,10 @@ const router = createBrowserRouter([
                     element:  <ProtecedRoutesAdmin><UserEdit/></ProtecedRoutesAdmin>
                 },
                 {
-                    path: "*",
-                    element: <ErrorPageAdmin/>,
-                }
+                    path: "/admin/records",
+                    element:  <ProtecedRoutesAdmin><AdminRecords/></ProtecedRoutesAdmin>
+                },
+
             ]
     },
     {
@@ -79,6 +81,10 @@ const router = createBrowserRouter([
                 element: <ProtecedRoutes><AnalyzViewer/></ProtecedRoutes>
             }
         ]
+    },
+    {
+        path: "*",
+        element: <ErrorPageAdmin/>,
     }
 
 ])

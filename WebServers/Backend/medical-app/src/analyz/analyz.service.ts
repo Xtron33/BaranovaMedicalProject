@@ -91,6 +91,12 @@ export class AnalyzService {
       order: {
         createdAt: 'DESC',
       },
+      relations: ['user'],
+      select: {
+        user: {
+          email: true,
+        },
+      },
       take: limit,
       skip: (page - 1) * limit,
     });

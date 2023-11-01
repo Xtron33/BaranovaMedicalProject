@@ -1,4 +1,4 @@
-import {Button, Icon, Pagination, PaginationProps} from "@gravity-ui/uikit";
+import {Button, Icon, Pagination, PaginationProps, Skeleton} from "@gravity-ui/uikit";
 import {useTheme} from "../../hooks/getTheme.ts";
 import {useNavigate} from "react-router-dom";
 import {CirclePlus} from "@gravity-ui/icons";
@@ -25,9 +25,11 @@ function AnalyzTable(){
         fetchAllUser(dispatch, pagination.page, pagination.pageSize)
     }, [update]);
 
+    const skeleton = [{},{},{},{},{},{}]
+
     const navigate = useNavigate()
 
-    const {Tables, count} = useAppSelector(state => state.AnalyzTableReducer)
+    const {Tables, count,isLoading} = useAppSelector(state => state.AnalyzTableReducer)
 
     return(
         <>
@@ -38,7 +40,7 @@ function AnalyzTable(){
                         Создать новый анализ <Icon data={CirclePlus}/>
                     </Button>
                 </div>
-                {Tables.map((elem) => <AnalyzTableItem key={elem.id} item={elem} theme={theme}/>)}
+                {isLoading ? skeleton.map(() => <Skeleton className="analyz-skeleton"></Skeleton>) : Tables.map((elem) =>  <AnalyzTableItem key={elem.id} item={elem} theme={theme}/>)}
                 <Pagination className="admin-container-pagination" pageSizeOptions={[6,12,24]} compact={true} showInput={true} page={pagination.page} pageSize={pagination.pageSize} total={count} onUpdate={handlePagination}/>
             </div>
         </>
