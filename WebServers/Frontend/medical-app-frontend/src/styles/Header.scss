@@ -5,6 +5,13 @@ body{
 
 }
 
+.yc-popup__content{
+
+  @media screen and (max-width: $Table) {
+    top:60px;
+    scale: 1.4;
+  }
+}
 
   .header.light{
     background: white;
@@ -23,6 +30,10 @@ body{
     -webkit-box-shadow:0 0 15px rgba(63, 55, 63, 0.10);
     display: flex;
     justify-content: center;
+    
+
+    
+    
     &-container{
 
 
@@ -32,17 +43,31 @@ body{
       width: 1200px;
       height: 75px;
 
+      @media screen and (max-width: $Table) {
+        justify-content: center;
+
+      }
 
       &-home{
         margin-right: 700px;
+        @media screen and (max-width: $Table) {
+          margin-right: 10%;
+        }
+
       }
       &__theme-switch{
         display: flex;
         justify-content: space-between;
         width: 150px;
 
+        @media screen and (max-width: $Table) {
+          margin-right: 10%;
+        }
+
+
         &-icon{
           cursor: pointer;
+
         }
       }
     }
