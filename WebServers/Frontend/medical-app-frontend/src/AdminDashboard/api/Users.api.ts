@@ -77,3 +77,25 @@ export const createSuperUser = async (data:IUser)=> {
     catch (e){
     }
 }
+
+export const fetchUsersPag = async (dispatch: AppDispatch, page: number, limit: number) => {
+    try{
+        dispatch(UserTableSlice.actions.setIsLoading(true));
+        const colums = await instance.get<TableColumnConfig<TableDataItem>[]>('http://localhost:5000/api/user/columns')
+        dispatch(UserTableSlice.actions.setColums(colums.data));
+        const data = await instance.get<[IUser[], number]>(`http://localhost:5000/api/user/pagination?page=${page}&limit=${limit}`)
+        dispatch(UserTableSlice.actions.setTable(data.data[0]))
+        dispatch(UserTableSlice.actions.setCount(data.data[1]))
+        dispatch(UserTableSlice.actions.setIsLoading(false))
+
+    } catch (e) {
+        let error:string = "Something bad gooing"
+
+        if(e instanceof Error){
+            error = e.message
+        }
+
+        dispatch(TableSlice.actions.setError(error))
+        dispatch(TableSlice.actions.setIsLoading(false))
+    }
+}

@@ -9,6 +9,7 @@ import {
   UsePipes,
   ValidationPipe,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -42,6 +43,16 @@ export class UserController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   findAll() {
     return this.userService.findAll();
+  }
+
+  @Get('pagination')
+  @Roles(['admin', 'super-admin'])
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  findAllWithPagination(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
+    return this.userService.findAllWithPagination(page, limit);
   }
 
   @Get('columns')

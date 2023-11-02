@@ -47,7 +47,10 @@ function AnalyzTableItem(props : {item: IAnalyz, theme: string}){
         <>
             <Card className={"analyz-container__elem "  + props.theme} view="raised" type="container" size="l" >
                 <div className={"analyz-container__elem-container"} onClick={() => navigate("./record/"+props.item.id)}>
-                    <span className={"analyz-container__elem-container__text"}>{props.item.lastname}_{props.item.firstname}_{props.item.middlename}_{time_stamp.toLocaleDateString('ru-RU')}</span>
+                    <div className={"analyz-container__elem-container__text"}>
+                        <span>{props.item.lastname} {props.item.firstname} {props.item.middlename}</span>
+                        <span className="analyz-container__elem-container__text-last">{time_stamp.toLocaleDateString('ru-RU')}</span>
+                    </div>
                     <Label className={"analyz-container__elem-container__label-"+condition[props.item.answer !== undefined ? props.item.answer : 4]} size={"m"} theme={theme[props.item.answer !== undefined ? props.item.answer : 4]}>{conditionLabel[props.item.answer]}</Label>
                 </div>
             </Card>

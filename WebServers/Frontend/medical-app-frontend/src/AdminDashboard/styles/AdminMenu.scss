@@ -13,6 +13,11 @@
     justify-content: center;
     width: 75%;
     margin-top: -100px;
+    
+    @media screen and (max-width: $Table) {
+      width: 100%;
+    }
+    
     &-container{
       align-items: center;
       justify-content: center;
@@ -23,6 +28,12 @@
       grid-template-rows: repeat(2, 1fr);
       grid-column-gap: 50px;
       grid-row-gap: 40px;
+
+      @media screen and (max-width: $Phone-large) {
+        margin-top: 200px;
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+      }
 
       &__elem.dark{
         background-color: $table-color-dark!important;
@@ -73,7 +84,8 @@
               margin-left: 15px;
               font-family: "Inter", serif;
               font-size: 20px;
-              font-weight: 600;
+              font-weight: 500;
+              line-height: 25px;
             }
           }
 

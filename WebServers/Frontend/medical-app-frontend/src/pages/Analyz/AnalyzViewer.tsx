@@ -191,7 +191,13 @@ function AnalyzViewer(){
     return(
         <div className={"admin"}>{
             isDone ?
-                <div className={"analizViewer_text"}>{Data.lastname}_{Data.firstname}_{Data.middlename}_{time_stamp.toLocaleDateString('ru-RU')}<Label theme={conditionTheme[Data.answer]} size={"m"}>{conditionLabel[Data.answer]}</Label></div>
+                <div className={"analizViewer_text"}>
+                    <div className={"analizViewer_text-con"}>
+                        <span>{Data.lastname} {Data.firstname} {Data.middlename}</span>
+                        <span className="analizViewer_text-con-last">{time_stamp.toLocaleDateString('ru-RU')}</span>
+                    </div>
+                    <Label theme={conditionTheme[Data.answer]} size={"m"}>{conditionLabel[Data.answer]}</Label>
+                </div>
                 :
 
                 <div className={"analizViewer_text"}>Новый анализ</div>

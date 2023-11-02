@@ -8,13 +8,15 @@ interface UserTableState{
     ColumnsName: TableColumnConfig<TableDataItem>[];
     isLoading: boolean;
     error: string;
+    count: number
 }
 
 const initialState: UserTableState = {
     Tables: [],
     ColumnsName: [],
     isLoading: false,
-    error: ''
+    error: '',
+    count: 0
 }
 
 export const UserTableSlice = createSlice({
@@ -32,6 +34,9 @@ export const UserTableSlice = createSlice({
         },
         setError(state,action:PayloadAction<string>){
             state.error = action.payload
+        },
+        setCount(state, action:PayloadAction<number>){
+            state.count = action.payload
         }
     }
 })

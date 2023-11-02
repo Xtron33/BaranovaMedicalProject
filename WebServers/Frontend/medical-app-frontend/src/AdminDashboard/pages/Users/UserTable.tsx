@@ -2,9 +2,18 @@ import {useEffect, useRef, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks.ts";
 import {useTheme} from "../../../hooks/getTheme.ts";
 import {useNavigate} from "react-router-dom";
-import {Button, Icon, Modal, Table, withTableActions, withTableSelection} from "@gravity-ui/uikit";
+import {
+    Button,
+    Icon,
+    Modal,
+    Pagination,
+    PaginationProps,
+    Table,
+    withTableActions,
+    withTableSelection
+} from "@gravity-ui/uikit";
 import {CirclePlus, TrashBin} from "@gravity-ui/icons";
-import {DeleteUserById, fetchUsers} from "../../api/Users.api.ts";
+import {DeleteUserById, fetchUsersPag} from "../../api/Users.api.ts";
 import {useRole} from "../../../hooks/useRole.ts";
 
 function UserTable(){
@@ -27,17 +36,24 @@ function UserTable(){
 
     const [isDeleteOpen, setIsDeleteOpen] = useState<boolean>(false)
 
-    const {Tables, ColumnsName} = useAppSelector(state => state.UserTabelReducer)
+    const {Tables, ColumnsName, count} = useAppSelector(state => state.UserTabelReducer)
 
-    useEffect(() => {
-        fetchUsers(dispatch)
-    },[update])
+
 
     function deletElem(item: { id: string | undefined; }):void{
         DeleteUserById(item.id);
         setUpdate(!update)
     }
 
+    const [pagination, setPagination] = useState({page: 1, pageSize: 50})
+    const handlePagination: PaginationProps['onUpdate'] = (page,pageSize) => {
+        setPagination((prevState) => ({...prevState, page, pageSize}))
+        setUpdate(!update)
+    }
+
+    useEffect(() => {
+        fetchUsersPag(dispatch,pagination.page,pagination.pageSize)
+    },[update])
     const getRowActions:(item: any) => [{ handler: () => void; text: string }, {
         handler: () => void;
         theme: "danger" | "normal" | undefined;
@@ -95,6 +111,7 @@ function UserTable(){
                         rowActionsSize="xl"
                     />
                 </div>
+                <Pagination className="admin-container-pagination" pageSizeOptions={[25,50,100]} compact={true} showInput={true} page={pagination.page} pageSize={pagination.pageSize} total={count} onUpdate={handlePagination}/>
                 <Modal className="admin-modal" open={isDeleteOpen} onClose={() => setIsDeleteOpen(false)}>
                     <div className="admin-modal-container">
                         <span>Вы собираетесь удалить пользователя. </span>

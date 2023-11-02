@@ -108,4 +108,14 @@ export class UserService {
 
     return newData;
   }
+
+  async findAllWithPagination(page: number, limit: number) {
+    return this.userRepository.findAndCount({
+      order: {
+        createdAt: 'DESC',
+      },
+      take: limit,
+      skip: (page - 1) * limit,
+    });
+  }
 }
