@@ -87,9 +87,21 @@ function UserTable(){
         setIsManyDeleteOpen(false)
     }
 
+    function selectHandler(ids: string[]){
+
+        let new_select_id: string[] = []
+        for (const id of ids){
+            let new_sel = Tables.find((el) => el.id !== undefined && el.id === parseInt(id))
+
+            if(role === "super-admin" || (role === "admin" && new_sel !==undefined && new_sel.role !== "admin" && new_sel.role !== "super-admin")){
+                new_select_id.push(id)
+            }
+        }
+        setSelectedIds(new_select_id)
+    }
+
     return(
         <>
-
             <div className="admin-container flex-col">
                 <div className="admin-container-first-line">
                     <Button width="auto" view="action" size="xl" onClick={() => navigate("new")}>
@@ -106,7 +118,7 @@ function UserTable(){
                         columns={ColumnsName}
                         getRowId={getRowId}
                         selectedIds={selectedIds}
-                        onSelectionChange={setSelectedIds}
+                        onSelectionChange={selectHandler}
                         getRowActions={getRowActions}
                         rowActionsSize="xl"
                     />
