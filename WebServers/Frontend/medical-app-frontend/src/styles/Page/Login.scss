@@ -1,10 +1,10 @@
 @import "../const";
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+//@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 
 
-.login{
+.login {
 
   width: 100vw;
   height: 100vh;
@@ -13,22 +13,23 @@
   justify-content: center;
 
 
-    &-container{
+  &-container {
 
 
-      &__login{
+    &__login {
+      display: flex;
+      margin-top: -100px;
+      height: 100vh;
+      align-items: center;
+
+      &-cont {
+
+        flex-direction: column;
+        height: 170px;
         display: flex;
-        margin-top: -100px;
-        height: 100vh;
         align-items: center;
-        &-cont{
-
-          flex-direction: column;
-          height: 170px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-        }
+        justify-content: space-between;
       }
     }
+  }
 }

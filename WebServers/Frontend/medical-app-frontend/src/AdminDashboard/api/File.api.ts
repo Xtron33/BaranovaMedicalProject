@@ -1,11 +1,11 @@
-import {instance} from "../../api/api.ts";
-import {AppDispatch} from "../../store/store.ts";
-import {UploadProgresSlice} from "../store/slice/UploadProgresSlice.ts";
+import { instance } from "../../api/api.ts";
+import { AppDispatch } from "../../store/store.ts";
+import { UploadProgresSlice } from "../store/slice/UploadProgresSlice.ts";
 
 export const uploadData = async (file: FormData, dispatch: AppDispatch) => {
-    try{
+    try {
         dispatch(UploadProgresSlice.actions.setProgress(0))
-        return instance.post<string>('http://localhost:5000/api/file/upload', file, {
+        return instance.post<string>('file/upload', file, {
             onUploadProgress: upload => {
                 if (upload.total) {
                     dispatch(UploadProgresSlice.actions.setProgress(
@@ -16,7 +16,7 @@ export const uploadData = async (file: FormData, dispatch: AppDispatch) => {
             }
         })
     }
-    catch (e){
+    catch (e) {
 
     }
 }

@@ -1,0 +1,5 @@
+kafka-python
+numpy==1.26.1
+pandas==2.1.2
+psycopg2==2.9.9
+tensorflow

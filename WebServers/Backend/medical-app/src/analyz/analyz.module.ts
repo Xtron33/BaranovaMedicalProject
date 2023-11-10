@@ -17,7 +17,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         options: {
           client: {
             clientId: 'analyz',
-            brokers: ['localhost:9092'],
+            brokers: [process.env.KAFKA_BROKERCONNECT],
           },
           producerOnlyMode: false,
           consumer: {
@@ -39,4 +39,4 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   controllers: [AnalyzController],
   providers: [AnalyzService],
 })
-export class AnalyzModule {}
+export class AnalyzModule { }

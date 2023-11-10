@@ -10,8 +10,10 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import Flatten
 import os
 
+kafka = os.environ['KAFKA_BROKERCONNECT']
+
 connect = psycopg2.connect(
-    database="Medical-App-DB", user="postgres", password="123", host="127.0.0.1", port="5432")
+    database="Medical-App-DB", user="postgres", password="secret_pass", host="host.docker.internal", port="5433")
 
 script_dir = os.getcwd() + '\WebServers\Backend\medical-neural-py\models\model.keras'
 
@@ -29,14 +31,14 @@ else:
     print('create new')
 
 consumer = KafkaConsumer(
-    bootstrap_servers='localhost:9092',
+    bootstrap_servers=kafka,
     auto_offset_reset='earliest',
     enable_auto_commit=True,
     group_id='neural'
 )
 
 
-producer = KafkaProducer(bootstrap_servers='localhost:9092')
+producer = KafkaProducer(bootstrap_servers=kafka)
 
 consumer.subscribe(['train', 'predicate'])
 for mes in consumer:
