@@ -16,7 +16,7 @@ export class AnalyzService {
   ) {}
 
   train() {
-    return this.client.emit('train', 'start_train');
+    return this.client.send('train', 'start_train');
   }
 
   predicate(createAnalyzDto: CreateAnalyzDto) {

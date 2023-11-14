@@ -15,8 +15,8 @@ kafka = os.environ['KAFKA_BROKERCONNECT']
 connect = psycopg2.connect(
     database="Medical-App-DB", user="postgres", password="secret_pass", host="host.docker.internal", port="5433")
 
-script_dir = os.getcwd() + '\WebServers\Backend\medical-neural-py\models\model.keras'
-
+script_dir = f'{os.getcwd()}/models/model.keras'
+print(script_dir)
 
 if os.path.isfile(script_dir):
     model = keras.models.load_model(script_dir)
@@ -55,6 +55,11 @@ for mes in consumer:
         print('Accuracy: %.2f' % (accuracy*100))
 
         model.save(script_dir)
+
+        head = [(mes.headers[0][0], mes.headers[0][1]),
+                ("kafka_nest-is-disposed", bytes('', 'utf-8'))]
+
+        producer.send('train.reply', value=b'done', headers=head)
     if mes.topic == 'predicate':
         print('predicate start ')
 

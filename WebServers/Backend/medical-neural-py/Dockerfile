@@ -1,18 +1,13 @@
-FROM python:3.11.5 as builder
-
-WORKDIR /app
-
-COPY neural-server.py .
-
-COPY requirements.txt .
-COPY /models ./models
-
 FROM python:3.11.5
-COPY --from=builder /app/requirements.txt .
-COPY --from=builder /app/neural-server.py .
 
-COPY /models /app/models
+WORKDIR usr/src/app
 
-RUN pip install -r requirements.txt
+COPY neural-server.py ./
 
-CMD ["python", "./neural-server.py"]
+COPY requirements.txt ./
+
+RUN pip install -r ./requirements.txt
+
+RUN mkdir -p models
+
+CMD ["python", "neural-server.py"]

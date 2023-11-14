@@ -120,7 +120,14 @@ function ClusterEdit() {
     function apply(data: ITable) {
 
         if (id.dataId != null) {
-            updateDataById(data, id.dataId).finally(() => startTrain())
+            updateDataById(data, id.dataId).finally(() => startTrain().finally(() => {
+                add({
+                    name: "train-done",
+                    title: "Треннировка завершенна",
+                    autoHiding: 2000,
+                    type: "success"
+                });
+            }));
             add({
                 name: "cluster-edit",
                 title: "Запись обновленна",

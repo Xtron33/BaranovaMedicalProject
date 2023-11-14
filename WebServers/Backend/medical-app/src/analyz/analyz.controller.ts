@@ -25,6 +25,7 @@ export class AnalyzController {
 
   onModuleInit() {
     this.client.subscribeToResponseOf('predicate');
+    this.client.subscribeToResponseOf('train');
   }
   @Post('/train')
   @Roles(['admin', 'super-admin'])
