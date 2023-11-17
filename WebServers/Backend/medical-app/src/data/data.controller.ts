@@ -21,7 +21,7 @@ export class DataController {
   constructor(private readonly dataService: DataService) {}
 
   @Post()
-  @Roles(['super-admin'])
+  @Roles(['admin', 'super-admin'])
   @UseGuards(JwtAuthGuard, RolesGuard)
   create(@Body() createDatumDto: CreateDatumDto) {
     return this.dataService.create(createDatumDto);
